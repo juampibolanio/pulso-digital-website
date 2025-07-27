@@ -26,6 +26,6 @@ app_name = 'apps.main'
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', inicio, name='inicio'),
-    path('auth/', include('apps.usuarios.urls')),
+    path('auth/', include('apps.usuarios.urls') ),
     path('noticias/', include('apps.noticias.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT, show_indexes=True)

@@ -68,7 +68,7 @@ TEMPLATES = [
 ]
 
 #Configuro el model usuario nuevo para q django lo use
-AUTH_MODEL_USER = 'usuarios.Usuario'
+AUTH_USER_MODEL = 'usuarios.Usuario'
 
 WSGI_APPLICATION = 'pulso_digital.wsgi.application'
 
