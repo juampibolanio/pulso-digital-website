@@ -1,4 +1,3 @@
-from email import message
 from django.contrib import messages
 from django.shortcuts import redirect, render
 from .forms import RegisterForm
@@ -18,11 +17,7 @@ def register_view(request):
     else:
         form = RegisterForm()
 
-    context = {
-        'form' : form
-    }
-
-    return render(request, 'auth/registro.html', context )
+    return render(request, 'auth/registro.html', {'form' : form} )
 
 # Login
 
@@ -36,7 +31,7 @@ def login_view(request):
 
         if user is not None:
             login(request, user)
-            return redirect('apps.usuarios:register') # Esto luego debe redireccionar a todas las noticias.
+            return redirect('apps.usuarios:register') # Esto luego debe redireccionar a todas las noticias. Modificar luego
         else:
             messages.error(request, 'Credenciales incorrectas, vuelva a intentarlo.')
 
