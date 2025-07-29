@@ -28,4 +28,5 @@ urlpatterns = [
     path('', inicio, name='inicio'),
     path('auth/', include('apps.usuarios.urls') ),
     path('noticias/', include('apps.noticias.urls')),
+    path('contrasenia/', include('django.contrib.auth.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT, show_indexes=True)

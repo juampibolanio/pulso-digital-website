@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión</title>
+</head>
+<body>
+    <h1>Iniciar sesión en Pulso Digital</h1>
+
+    <form action="{% url 'apps.usuarios:login' %}" method="post">
+
+        {% csrf_token %}
+        <p><input type="text" name="username" placeholder="Nombre de usuario", required autofocus></p>
+        <p><input type="password" name="password" placeholder="Contraseña", required autofocus></p>
+        <button type="submit">Iniciar sesión</button>
+
+        <p>Aún no tienes una cuenta? <a href="{% url 'apps.usuarios:register' %}">Registrarse </a></p>
+        <p><a href="{% url 'apps.usuarios:password_reset'%}">Olvidaste tu contraseña?</a></p>
+
+    </form>
+</body>
+</html>

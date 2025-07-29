@@ -7,5 +7,19 @@
 </head>
 <body>
     <h1>Esta es la página principal</h1>
+
+    <br>
+
+    {% if request.user.is_authenticated %}
+        <p>Hola, {{ request.user.username }}</p>
+        <a href="{% url 'apps.usuarios:logout' %}">Cerrar sesión</a>
+    {% else %}
+        <a href="{% url 'apps.usuarios:login' %}">Iniciar sesión</a>
+        <a href="{% url 'apps.usuarios:register' %}">Registrarse </a>
+    {% endif %}
+
+    <br>
+    
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus, asperiores. At optio vel amet tempora sapiente nobis, veritatis, omnis assumenda delectus laborum id dicta rerum ad enim, expedita tempore animi!</p>
 </body>
 </html>
