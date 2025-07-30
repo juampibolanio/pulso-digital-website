@@ -25,6 +25,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config('SECRET_KEY')
 
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 # Application definition
 
@@ -35,6 +36,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'apps.noticias',
+    'apps.usuarios',
+    #'apps.comentarios',
 ]
 
 MIDDLEWARE = [
@@ -63,6 +67,9 @@ TEMPLATES = [
         },
     },
 ]
+
+#Configuro el model usuario nuevo para q django lo use
+AUTH_USER_MODEL = 'usuarios.Usuario'
 
 WSGI_APPLICATION = 'pulso_digital.wsgi.application'
 
