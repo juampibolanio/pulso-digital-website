@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOTICIAS | CREAR</title>
+</head>
+<body>
+    <h1>CREAR NOTICIA</h1>
+    <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    
+    <label for="imagenes">Subir imágenes:</label>
+    <p>Elija todas las imágenes que desea subir</p>
+    <input type="file" name="imagenes" multiple required>
+    <br>
+
+    <button type="submit">Crear Noticia</button>
+</form>
+
+</body>
+</html>

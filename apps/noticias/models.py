@@ -28,5 +28,3 @@ class ImagenNoticia(models.Model):
     noticia = models.ForeignKey(Noticia, on_delete=models.CASCADE, related_name='imagenes')
     imagen = models.ImageField(upload_to='noticias/noticias_imagenes')
 
-    def __str__(self):
-        return self.imagen
