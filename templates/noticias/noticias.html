@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOTICIAS | INICIO</title>
+</head>
+
+<body>
+    <hr>
+    <h1>TODAS LAS NOTICIAS</h1>
+    <br>
+    <br>
+    <br>
+    
+    {% for categoria in categorias %}
+    <a href="?categoria={{categoria.nombre}}">{{categoria.nombnre}}</a>
+    {% endfor %}
+
+    <br>
+    <br>
+
+    {% for noticia in noticias %}
+        <hr>
+        <h2>{{noticia.nombre}}</h2>
+        <p><strong>{{noticia.fecha}}</strong> | Creada por: {{noticia.autor}}</p>
+    {% endfor %}
+
+    <a href="/noticias/{{noticia.noticia_id}}">VER MÁS</a>
+
+</body>
+
+</html>
