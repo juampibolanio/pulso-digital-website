@@ -22,10 +22,12 @@ def noticias(request):
 
 #Noticia Detalle
 def detalle_noticia(request, noticia_id):
-    noticia = Noticia.objects.get(noticia_id)
+    noticia = Noticia.objects.get(noticia_id=noticia_id)
+    imagenes = ImagenNoticia.objects.filter(noticia_id=noticia_id)
 
     context = {
-        "detalle": noticia
+        "detalle": noticia,
+        "imagen": imagenes
     }
 
     return render(request, 'noticias/detalle_noticia.html', context)
@@ -65,7 +67,7 @@ def editar_noticia(request, noticia_id):
             form.save()
             return redirect("detalle_noticia", noticia_id=noticia.noticia.id)
     else:
-        form = NoticiaForm(instante=noticia)
+        form = NoticiaForm(instance=noticia)
 
     context = {
         "form": form

@@ -12,11 +12,13 @@
     <br><br><br><br>
 
     <div>
-        {% if detalle.imagen %}
-        <img src="{{detalle.imagen.url}}" alt="{{detalle.nombre}}">
-        {% else %}
-            <p>No hay imagen disponible</p>
-        {% endif %}
+        {% if imagen %}
+            {% for img in imagen %}
+                <img src="{{ img.imagen.url }}" alt="Imagen de la noticia">
+            {% endfor %}
+            {% else %}
+                <p>No hay imagen disponible</p>
+            {% endif %}
     </div>
 
     <div>
