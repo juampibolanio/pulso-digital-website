@@ -12,21 +12,19 @@
     <br>
     <br>
     <br>
-    
+    <hr>
     {% for categoria in categorias %}
-    <a href="?categoria={{categoria.nombre}}">{{categoria.nombnre}}</a>
+    <a href="?categoria={{categoria.nombre}}">{{categoria.nombre}}</a>
     {% endfor %}
+    <hr>
 
-    <br>
     <br>
 
     {% for noticia in noticias %}
-        <hr>
-        <h2>{{noticia.nombre}}</h2>
-        <p><strong>{{noticia.fecha}}</strong> | Creada por: {{noticia.autor}}</p>
+        <h2>{{ noticia.titulo }}</h2>
+        <p><strong>{{ noticia.fecha }}</strong> | Creada por: {{ noticia.autor}} </p>
+        <a href="/noticias/{{noticia.noticia_id}}">Leer más</a>
     {% endfor %}
-
-    <a href="/noticias/{{noticia.noticia_id}}">VER MÁS</a>
 
 </body>
 

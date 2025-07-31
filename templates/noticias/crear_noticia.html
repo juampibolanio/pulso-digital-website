@@ -7,10 +7,17 @@
 </head>
 <body>
     <h1>CREAR NOTICIA</h1>
-    <form action="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Crear Noticia</button>
-    </form>
+    <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    
+    <label for="imagenes">Subir imágenes:</label>
+    <p>Elija todas las imágenes que desea subir</p>
+    <input type="file" name="imagenes" multiple required>
+    <br>
+
+    <button type="submit">Crear Noticia</button>
+</form>
+
 </body>
 </html>
