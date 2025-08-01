@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Comentario
-from .forms import comentarioForm
+from .forms import ComentarioForm
 from noticias.models import Noticia
 
 def detalle_noticia(request, noticia_id):
@@ -8,7 +8,7 @@ def detalle_noticia(request, noticia_id):
     comentarios = noticia.comentarios.all().order.by('-fecha')
 
     if request.method == 'POST':
-        form = comentarioForm(request.POST)
+        form = ComentarioForm(request.POST)
         if form.is_valid():
             nuevo_comentario = form.save(commit=False)
             nuevo_comentario.noticia = noticia
@@ -16,7 +16,7 @@ def detalle_noticia(request, noticia_id):
             return redirect('detalle_noticia', noticia_id=noticia.id)
     
     else:
-        form = comentarioForm()
+        form = ComentarioForm()
 
     return render(request, 'comentarios/detalle_noticia.html', {'noticia': noticia,
                                                                 'comentarios': comentarios, 

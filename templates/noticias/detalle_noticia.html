@@ -1,32 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NOTICIAS | DETALLE</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ detalle.titulo }} | Noticia</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
 </head>
 <body>
-    <hr>
-    <h1>NOTICIA</h1>
-    <hr>
-    <br><br><br><br>
+    <header class="bg-dark text-white p-3 mb-4">
+        <div class="container">
+            <h1 class="h3">Detalle de Noticia</h1>
+        </div>
+    </header>
 
-    <div>
-        {% if imagen %}
-            {% for img in imagen %}
-                <img src="{{ img.imagen.url }}" alt="Imagen de la noticia">
-            {% endfor %}
-            {% else %}
-                <p>No hay imagen disponible</p>
-            {% endif %}
-    </div>
+    <main class="container">
+        <div class="row">
+            <!-- Imagen -->
+            <div class="col-12 mb-4">
+                {% if imagen %}
+                    {% for img in imagen %}
+                        <img src="{{ img.imagen.url }}" class="img-fluid mb-2" alt="Imagen de la noticia">
+                    {% endfor %}
+                {% else %}
+                    <p>No hay imagen disponible</p>
+                {% endif %}
+            </div>
 
-    <div>
-        <small>Categorias: {{detalle.categorias.all|join:' '}}</small>
-        <h2>{{detalle.titulo}}</h2>
-        <p><strong>{{detalle.fecha}}</strong> | Escrita por: {{detalle.autor}}</p>
-        <p>{{detalle.contenido}}</p>
-    </div>
+            <!-- Info de la noticia -->
+            <div class="col-12">
+                <small class="text-muted">Categorías: {{ detalle.categorias.all|join:", " }}</small>
+                <h2 class="mt-2">{{ detalle.titulo }}</h2>
+                <p class="text-secondary">
+                    <strong>{{ detalle.fecha|date:"d/m/Y H:i" }}</strong> |
+                    Escrita por: {{ detalle.autor }}
+                </p>
+                <div>
+                    <p>{{ detalle.contenido }}</p>
+                </div>
+            </div>
+        </div>
 
+        <!-- Comentarios -->
+        <div class="mt-5">
+            {% include 'comentarios/_comentarios.html' %}
+        </div>
+    </main>
+
+    <footer class="bg-light text-center p-3 mt-5">
+        <p class="mb-0">© {{ now|date:"Y" }} Pulso Digital</p>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

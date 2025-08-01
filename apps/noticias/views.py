@@ -1,4 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
+
+from apps.comentarios.forms import ComentarioForm
+from apps.comentarios.models import Comentario
 from .models import Noticia, Categoria, ImagenNoticia
 from .forms import NoticiaForm, NoticiaImagenForm
 from django.shortcuts import redirect
@@ -21,16 +24,30 @@ def noticias(request):
     return render(request, 'noticias/noticias.html', context)
 
 #Noticia Detalle
-def detalle_noticia(request, noticia_id):
-    noticia = Noticia.objects.get(noticia_id=noticia_id)
-    imagenes = ImagenNoticia.objects.filter(noticia_id=noticia_id)
+def detalle_noticia(request, pk):
+    noticia = get_object_or_404(Noticia, pk=pk)
+    comentarios = Comentario.objects.filter(noticia=noticia).order_by('-fecha')
 
-    context = {
-        "detalle": noticia,
-        "imagen": imagenes
-    }
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+            form = ComentarioForm(request.POST)
+            if form.is_valid():
+                nuevo_comentario = form.save(commit=False) # este commit=false, es para q se genere el comentario en la bd, pero se espere a q le pasemos datos, y así lo guardamos de nuevo con los datos.
+                nuevo_comentario.user = request.user
+                nuevo_comentario.noticia = noticia
+                nuevo_comentario.save() # acá lo guardamos de nuevo
+                return redirect('detalle_noticia', pk=pk)
+        else:
+            return redirect('login')
+    else:
+        form = ComentarioForm()
 
-    return render(request, 'noticias/detalle_noticia.html', context)
+    return render(request, 'noticias/detalle.html', {
+        'detalle': noticia,
+        'comentarios': comentarios,
+        'form': form
+    })
+
 
 #Crear noticia
 def crear_noticia(request):
