@@ -123,3 +123,22 @@ def eliminar_noticia(request, noticia_id):
     }
 
     return render(request, 'noticias/eliminar_noticia.html', context)
+
+# CREO LA VISTA CATEGORIA 
+
+def categoria(request):
+    return render(request, 'category.html')
+
+# Página de inicio (index.html principal)
+def inicio(request):
+    return render(request, 'index.html')
+
+#CREO LA VISTA NOSOTROS
+def nosotros(request):
+    return render(request, 'nosotros.html')
+
+#CREO LA VISTA CONTACTO
+from django.shortcuts import render
+
+def contacto(request):
+    return render(request, 'contact.html')
