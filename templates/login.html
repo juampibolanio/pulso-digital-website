@@ -14,13 +14,16 @@
 
     .left-section {
       flex: 1;
-      background: url('robot.jpg') no-repeat center center;
-      background-size: cover;
+      background: url('../static/img/login_robot.png') no-repeat center center; 
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat; 
       color: #000;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
       padding: 40px;
+      min-height: 100vh;
     }
 
     .left-section h1 {
@@ -68,6 +71,8 @@
       border-radius: 8px;
       font-size: 16px;
       cursor: pointer;
+      width: 100%;
+      text-decoration: none; /* necesario para <a> */
     }
 
     .social-btn img {
@@ -92,11 +97,11 @@
     }
 
     .divider::before {
-      left: 0;
+      left: 0; 
     }
 
     .divider::after {
-      right: 0;
+      right: 0; 
     }
 
     .divider span {
@@ -104,16 +109,18 @@
       padding: 0 10px;
     }
 
-    .form-group {
+    .form-group2 {
       margin: 12px 0;
+      width: 100%;
     }
 
-    .form-group input {
+    .form-group2 input {
       width: 100%;
       padding: 10px;
       font-size: 16px;
       border: 2px solid #0089d0;
       border-radius: 4px;
+      /*box-sizing: border-box*/
     }
 
     .forgot-password {
@@ -137,7 +144,12 @@
       font-size: 16px;
       cursor: pointer;
       width: 100%;
-    }
+      text-decoration: none; /* necesario para <a> */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 8px 0;    
+    }  
 
     .register {
       margin-top: 16px;
@@ -160,6 +172,8 @@
         height: 40vh;
         padding: 20px;
         align-items: flex-start;
+        /* background-position: top;
+        background-size: contain; */
       }
 
       .right-section {
@@ -169,33 +183,44 @@
   </style>
 </head>
 <body>
+ 
   <div class="left-section">
     <div>
-      <h1>Pulso <span>Digital</span></h1>
-      <p>Descubrí avances en robótica e inteligencia artificial</p>
+      <!-- la imagen se carga por css -->
     </div>
   </div>
+  
 
   <div class="right-section">
     <div class="login-container">
       <h2>INICIAR SESIÓN</h2>
       <p style="text-align:center;">Con tus redes sociales</p>
 
+      <!-- 
       <button class="social-btn">
-        <img src="google-icon.png" alt="Google"> Iniciar sesión con Google
-      </button>
+        <img src="../static/img/login_google_icon.png" alt="Google"> Iniciar sesión con Google
+      </button> 
 
       <button class="social-btn">
-        <img src="facebook-icon.png" alt="Facebook"> Iniciar sesión con Facebook
+        <img src="../static/img/login_facebook_icon.png" alt="Facebook"> Iniciar sesión con Facebook
       </button>
+      -->
 
-      <div class="divider"><span>Ó con tu Email</span></div>
+      <a href="ruta-a-google-login.html" class="social-btn">
+        <img src="../static/img/login_google_icon.png" alt="Google"> Iniciar sesión con Google
+      </a>
 
-      <div class="form-group">
+      <a href="ruta-a-facebook-login.html" class="social-btn">
+        <img src="../static/img/login_facebook_icon.png" alt="Facebook"> Iniciar sesión con Facebook
+      </a>
+
+      <div style="text-align:center;"><span>Ó con tu Email</span></div>
+
+      <div class="form-group2">
         <input type="email" placeholder="Email*" />
       </div>
 
-      <div class="form-group">
+      <div class="form-group2">
         <input type="password" placeholder="Contraseña*" />
       </div>
 
@@ -203,7 +228,9 @@
         <a href="#">¿Olvidaste tu contraseña?</a>
       </div>
 
-      <button class="login-btn">Iniciar Sesión</button>
+      <!-- <button class="login-btn">Iniciar Sesión</button> -->
+      <a href="ruta-a-home.html" class="login-btn"> Iniciar sesión
+      </a>
 
       <div class="register">
         ¿No tenes cuenta aún? <a href="#">REGISTRATE</a>
