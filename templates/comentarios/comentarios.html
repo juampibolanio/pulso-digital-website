@@ -1,0 +1,35 @@
+<div class="bg-white border border-top-0 p-4">
+    {% if comentarios %}
+        {% for comentario in comentarios %}
+            <div class="media mb-4">
+                <div class="media-body">
+                    <h6 class="mb-1">
+                        <span class="text-secondary font-weight-bold">{{ comentario.user.username }}</span>
+                        <small><i>{{ comentario.fecha|date:"d M Y H:i" }}</i></small>
+                    </h6>
+                    <p class="mb-2">{{ comentario.contenido }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="text-muted">No hay comentarios aún.</p>
+    {% endif %}
+</div>
+
+{% if user.is_authenticated %}
+    <div class="bg-white border border-top-0 p-4 mt-4">
+        <h5 class="mb-3">Dejar un comentario</h5>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="{{ form.contenido.id_for_label }}">{{ form.contenido.label }}</label>
+                {{ form.contenido }}
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar comentario</button>
+        </form>
+    </div>
+{% else %}
+    <div class="alert alert-warning mt-4">
+        <p><a href="{% url 'login' %}">Iniciá sesión</a> para comentar.</p>
+    </div>
+{% endif %}

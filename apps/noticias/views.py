@@ -2,8 +2,8 @@ from django.shortcuts import get_object_or_404, render
 
 from apps.comentarios.forms import ComentarioForm
 from apps.comentarios.models import Comentario
-from .models import Noticia, Categoria, ImagenNoticia
-from .forms import NoticiaForm, NoticiaImagenForm
+from .models import Categoria, ImagenNoticia, Noticia
+from .forms import NoticiaForm
 from django.shortcuts import redirect
 
 #Listar todas las noticias
@@ -24,29 +24,33 @@ def noticias(request):
     return render(request, 'noticias/noticias.html', context)
 
 #Noticia Detalle
-def detalle_noticia(request, pk):
-    noticia = get_object_or_404(Noticia, pk=pk)
+
+def detalle_noticia(request, noticia_id):
+    noticia = get_object_or_404(Noticia, pk=noticia_id)
     comentarios = Comentario.objects.filter(noticia=noticia).order_by('-fecha')
+    imagenes = noticia.imagenes.all()
 
     if request.method == 'POST':
         if request.user.is_authenticated:
             form = ComentarioForm(request.POST)
             if form.is_valid():
-                nuevo_comentario = form.save(commit=False) # este commit=false, es para q se genere el comentario en la bd, pero se espere a q le pasemos datos, y así lo guardamos de nuevo con los datos.
+                nuevo_comentario = form.save(commit=False)
                 nuevo_comentario.user = request.user
                 nuevo_comentario.noticia = noticia
-                nuevo_comentario.save() # acá lo guardamos de nuevo
-                return redirect('detalle_noticia', pk=pk)
+                nuevo_comentario.save()
+                return redirect('apps.noticias:detalle_noticia', noticia_id=noticia_id)
         else:
             return redirect('login')
     else:
         form = ComentarioForm()
 
-    return render(request, 'noticias/detalle.html', {
+    return render(request, 'noticias/detalle_noticia.html', {
         'detalle': noticia,
         'comentarios': comentarios,
-        'form': form
+        'form': form,
+        'imagen': imagenes  
     })
+
 
 
 #Crear noticia
@@ -129,16 +133,29 @@ def eliminar_noticia(request, noticia_id):
 def categoria(request):
     return render(request, 'category.html')
 
-# Página de inicio (index.html principal)
+# Página de inicio (index.html principal) -
 def inicio(request):
-    return render(request, 'index.html')
+    # obtenemos las noticias más recientes para diferentes secciones de la pagina
+    noticia_principal = Noticia.objects.first()  # La noticia más reciente la pongo en el slider principal (la seccion de arriba del todo)
+    noticias_secundarias = Noticia.objects.all()[1:5]  # Las siguientes 4 noticias para las tarjetas mas chicas
+    noticias_destacadas = Noticia.objects.all()[:2]  # 2 noticias para la sección destacadas
+    ultimas_noticias = Noticia.objects.all()[:8]  # 8 noticias para la sección de últimas noticias
+    noticias_trending = Noticia.objects.all()[:5]  # 5 noticias para trending en el sidebar
+    # coloque  [:número] para que me traiga una cantidad determinada de noticias.
+    
+    context = {
+        'noticia_principal': noticia_principal,
+        'noticias_secundarias': noticias_secundarias,
+        'noticias_destacadas': noticias_destacadas,
+        'ultimas_noticias': ultimas_noticias,
+        'noticias_trending': noticias_trending,
+    }
+    
+    return render(request, 'index.html', context)
 
 #CREO LA VISTA NOSOTROS
 def nosotros(request):
     return render(request, 'nosotros.html')
-
-#CREO LA VISTA CONTACTO
-from django.shortcuts import render
 
 def contacto(request):
     return render(request, 'contact.html')

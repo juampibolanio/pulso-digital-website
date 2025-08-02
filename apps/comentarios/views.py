@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Comentario
+
+from apps.noticias.models import Noticia
 from .forms import ComentarioForm
-from noticias.models import Noticia
 
 def detalle_noticia(request, noticia_id):
     noticia = get_object_or_404(Noticia, id=noticia_id)
