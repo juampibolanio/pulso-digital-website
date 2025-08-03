@@ -25,26 +25,6 @@
                 <button class="btn btn-sm btn-outline-secondary">Responder</button>
                 {% endif %}
 
-                <!-- Respuestas-->
-                {% if comentario.respuestas.all %}
-                {% for respuesta in comentario.respuestas.all %}
-                <div class="media mt-4">
-                    <img src="{{ respuesta.user.imagen_perfil.url }}" alt="{{ respuesta.user.username }}"
-                        class="img-fluid mr-3 mt-1"
-                        style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover;">
-                    <div class="media-body">
-                        <h6>
-                            <a class="text-secondary font-weight-bold" href="#">{{ respuesta.user.username }}</a>
-                            <small><i>{{ respuesta.fecha|date:"d M Y" }}</i></small>
-                        </h6>
-                        <p>{{ respuesta.contenido }}</p>
-                        {% if user.is_authenticated %}
-                        <button class="btn btn-sm btn-outline-secondary">Responder</button>
-                        {% endif %}
-                    </div>
-                </div>
-                {% endfor %}
-                {% endif %}
             </div>
         </div>
         {% endfor %}

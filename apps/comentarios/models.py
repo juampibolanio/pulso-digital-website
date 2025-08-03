@@ -13,4 +13,4 @@ class Comentario(models.Model):
                                 related_name='comentarios')
 
     def __str__(self):
-        return f'Comentario de {self.nombre} en {self.noticia.titulo}'
+        return f'{self.autor} - {self.noticia.titulo[30]}'
