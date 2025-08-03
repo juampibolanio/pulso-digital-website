@@ -5,11 +5,20 @@ from apps.comentarios.models import Comentario
 from .models import Categoria, ImagenNoticia, Noticia
 from .forms import NoticiaForm
 from django.shortcuts import redirect
+from django.utils import timezone
+from datetime import timedelta
+
+#Listar todas las categorías
+def categorias():
+    categorias = Categoria.objects.all()
+
+    return categorias
+
 
 #Listar todas las noticias
 def noticias(request):
     noticias = Noticia.objects.all()
-    categorias = Categoria.objects.all()
+    categorias_list = categorias()
 
     params = request.GET.get('categoria', '').strip()
 
@@ -18,7 +27,7 @@ def noticias(request):
 
     context = {
         "noticias": noticias,
-        "categorias": categorias
+        "categorias": categorias_list
     }   
 
     return render(request, 'noticias/noticias.html', context)
@@ -29,6 +38,8 @@ def detalle_noticia(request, noticia_id):
     noticia = get_object_or_404(Noticia, pk=noticia_id)
     comentarios = Comentario.objects.filter(noticia=noticia).order_by('-fecha')
     imagenes = noticia.imagenes.all()
+    todas_las_categorias = categorias()
+    noticias_trending = Noticia.objects.all()[:5]
 
     if request.method == 'POST':
         if request.user.is_authenticated:
@@ -44,12 +55,16 @@ def detalle_noticia(request, noticia_id):
     else:
         form = ComentarioForm()
 
-    return render(request, 'noticias/detalle_noticia.html', {
+    context = {
         'detalle': noticia,
         'comentarios': comentarios,
         'form': form,
-        'imagen': imagenes  
-    })
+        'imagen': imagenes,
+        'todas_las_categorias': todas_las_categorias,
+        'noticias_trending' : noticias_trending
+    }
+
+    return render(request, 'noticias/detalle_noticia.html', context )
 
 
 
@@ -133,22 +148,28 @@ def eliminar_noticia(request, noticia_id):
 def categoria(request):
     return render(request, 'category.html')
 
-# Página de inicio (index.html principal) -
+# Página de inicio ( este es el index.html principal) - 
 def inicio(request):
-    # obtenemos las noticias más recientes para diferentes secciones de la pagina
-    noticia_principal = Noticia.objects.first()  # La noticia más reciente la pongo en el slider principal (la seccion de arriba del todo)
-    noticias_secundarias = Noticia.objects.all()[1:5]  # Las siguientes 4 noticias para las tarjetas mas chicas
-    noticias_destacadas = Noticia.objects.all()[:2]  # 2 noticias para la sección destacadas
-    ultimas_noticias = Noticia.objects.all()[:8]  # 8 noticias para la sección de últimas noticias
-    noticias_trending = Noticia.objects.all()[:5]  # 5 noticias para trending en el sidebar
-    # coloque  [:número] para que me traiga una cantidad determinada de noticias.
-    
+    todas_las_categorias = categorias()
+    # Noticias para otras secciones
+    noticia_principal = Noticia.objects.first()
+    noticias_secundarias = Noticia.objects.all()[1:5]
+    noticias_destacadas = Noticia.objects.all()[:2]
+    ultimas_noticias = Noticia.objects.all()[:8]
+    noticias_trending = Noticia.objects.all()[:5]
+
+    # noticias de las últimas 24 horas
+    ultima_hora = timezone.now() - timedelta(days=1)
+    noticias_ultima_hora = Noticia.objects.filter(fecha__gte=ultima_hora).order_by('-fecha')[:10]
+
     context = {
         'noticia_principal': noticia_principal,
         'noticias_secundarias': noticias_secundarias,
         'noticias_destacadas': noticias_destacadas,
         'ultimas_noticias': ultimas_noticias,
         'noticias_trending': noticias_trending,
+        'noticias_ultima_hora': noticias_ultima_hora,
+        'todas_las_categorias' : todas_las_categorias
     }
     
     return render(request, 'index.html', context)
@@ -157,5 +178,17 @@ def inicio(request):
 def nosotros(request):
     return render(request, 'nosotros.html')
 
+#CREO LA VISTA CONTACTO
 def contacto(request):
     return render(request, 'contact.html')
+
+def tendencias(request):
+    todas_las_categorias = categorias()
+    noticias_trending = Noticia.objects.all()[:5]
+
+    context = {
+        'todas_las_categorias': todas_las_categorias,
+        'noticias_trending' : noticias_trending
+    }
+
+    render(request, 'componentes/tendencias.html', context)

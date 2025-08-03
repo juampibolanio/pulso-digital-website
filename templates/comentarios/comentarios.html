@@ -1,35 +1,103 @@
-<div class="bg-white border border-top-0 p-4">
-    {% if comentarios %}
+<!-- Comment List Start -->
+<div class="mb-3">
+    <div class="section-title mb-0">
+        <h4 class="m-0 text-uppercase font-weight-bold">
+            {% if comentarios %}
+            {{ comentarios|length }} Comentario{{ comentarios|length|pluralize:"s" }}
+            {% else %}
+            0 Comentarios
+            {% endif %}
+        </h4>
+    </div>
+    <div class="bg-white border border-top-0 p-4">
+        {% if comentarios %}
         {% for comentario in comentarios %}
-            <div class="media mb-4">
-                <div class="media-body">
-                    <h6 class="mb-1">
-                        <span class="text-secondary font-weight-bold">{{ comentario.user.username }}</span>
-                        <small><i>{{ comentario.fecha|date:"d M Y H:i" }}</i></small>
-                    </h6>
-                    <p class="mb-2">{{ comentario.contenido }}</p>
-                </div>
-            </div>
-        {% endfor %}
-    {% else %}
-        <p class="text-muted">No hay comentarios aún.</p>
-    {% endif %}
-</div>
+        <div class="media {% if not forloop.last %}mb-4{% endif %}">
+            <img src="{{ comentario.user.imagen_perfil.url }}" alt="{{ comentario.user.username }}"
+                class="img-fluid mr-3 mt-1" style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover;">
+            <div class="media-body">
+                <h6>
+                    <a class="text-secondary font-weight-bold" href="#">{{ comentario.user.username }}</a>
+                    <small><i>{{ comentario.fecha|date:"d M Y" }}</i></small>
+                </h6>
+                <p>{{ comentario.contenido }}</p>
+                {% if user.is_authenticated %}
+                <button class="btn btn-sm btn-outline-secondary">Responder</button>
+                {% endif %}
 
-{% if user.is_authenticated %}
-    <div class="bg-white border border-top-0 p-4 mt-4">
-        <h5 class="mb-3">Dejar un comentario</h5>
+                <!-- Respuestas-->
+                {% if comentario.respuestas.all %}
+                {% for respuesta in comentario.respuestas.all %}
+                <div class="media mt-4">
+                    <img src="{{ respuesta.user.imagen_perfil.url }}" alt="{{ respuesta.user.username }}"
+                        class="img-fluid mr-3 mt-1"
+                        style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover;">
+                    <div class="media-body">
+                        <h6>
+                            <a class="text-secondary font-weight-bold" href="#">{{ respuesta.user.username }}</a>
+                            <small><i>{{ respuesta.fecha|date:"d M Y" }}</i></small>
+                        </h6>
+                        <p>{{ respuesta.contenido }}</p>
+                        {% if user.is_authenticated %}
+                        <button class="btn btn-sm btn-outline-secondary">Responder</button>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p class="text-muted">No hay comentarios aún. ¡Sé el primero en comentar!</p>
+        {% endif %}
+    </div>
+</div>
+<!-- Comment List End -->
+
+<!-- Comment Form Start -->
+<div class="mb-3">
+    <div class="section-title mb-0">
+        <h4 class="m-0 text-uppercase font-weight-bold">Dejar un comentario</h4>
+    </div>
+    <div class="bg-white border border-top-0 p-4">
+        {% if user.is_authenticated %}
         <form method="post">
             {% csrf_token %}
+            <div class="form-row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="name">Nombre *</label>
+                        <input type="text" class="form-control" id="name"
+                            value="{{ user.get_full_name|default:user.username }}" readonly>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" class="form-control" id="email" value="{{ user.email }}" readonly>
+                    </div>
+                </div>
+            </div>
             <div class="form-group">
-                <label for="{{ form.contenido.id_for_label }}">{{ form.contenido.label }}</label>
+                <label for="{{ form.contenido.id_for_label }}">Mensaje *</label>
                 {{ form.contenido }}
             </div>
-            <button type="submit" class="btn btn-primary">Enviar comentario</button>
+            <div class="form-group mb-0">
+                <input type="submit" value="Dejar un comentario"
+                    class="btn btn-primary font-weight-semi-bold py-2 px-3">
+            </div>
         </form>
+        {% else %}
+        <div class="alert alert-warning">
+            <p class="mb-0">
+                <a href="{% url 'login' %}" class="alert-link">Inicia sesión</a>
+                o
+                <a href="{% url 'register' %}" class="alert-link">regístrate</a>
+                para dejar un comentario.
+            </p>
+        </div>
+        {% endif %}
     </div>
-{% else %}
-    <div class="alert alert-warning mt-4">
-        <p><a href="{% url 'login' %}">Iniciá sesión</a> para comentar.</p>
-    </div>
-{% endif %}
+</div>
+<!-- Comment Form End -->
