@@ -1,13 +1,12 @@
 from django.db import models
-from django.utils import timezone
+from django.conf import settings
+from apps.noticias.models import Noticia
 
 class Comentario(models.Model):
-    nombre = models.CharField(max_length=100)
-    contenido = models.TextField()
-    fecha = models.DateTimeField(default=timezone.now)
-    noticia = models.ForeignKey('noticias.Noticia', 
-                                on_delete=models.CASCADE, 
-                                related_name='comentarios')
+    noticia = models.ForeignKey(Noticia, related_name='comentarios', on_delete=models.CASCADE)
+    autor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    texto = models.TextField()
+    fecha = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'Comentario de {self.nombre} en {self.noticia.titulo}'
+        return f'{self.autor} - {self.noticia.titulo[30]}'
