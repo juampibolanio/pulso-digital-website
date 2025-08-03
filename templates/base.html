@@ -124,10 +124,38 @@
                                     class="fa fa-search"></i></button>
                         </div>
                     </div>
-                    <!-- Botón de Inicio de Sesión -->
-                    <a href="{% url 'apps.usuarios:login' %}" class="btn btn-outline-light btn-sm">
-                        <i class="fas fa-user mr-1"></i>Iniciar Sesión
-                    </a>
+                    
+                    <!-- Sección de autenticación -->
+                    {% if user.is_authenticated %}
+                        <!-- Usuario autenticado -->
+                        <div class="dropdown">
+                            <button class="btn btn-outline-light btn-sm dropdown-toggle" type="button" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-user mr-1"></i>
+                                {% if user.first_name %}
+                                    {{ user.first_name }}
+                                {% else %}
+                                    {{ user.username }}
+                                {% endif %}
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-user-circle mr-2"></i>Mi Perfil
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-cog mr-2"></i>Configuración
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{% url 'apps.usuarios:logout' %}">
+                                    <i class="fas fa-sign-out-alt mr-2"></i>Cerrar Sesión
+                                </a>
+                            </div>
+                        </div>
+                    {% else %}
+                        <!-- Usuario no autenticado -->
+                        <a href="{% url 'apps.usuarios:login' %}" class="btn btn-outline-light btn-sm">
+                            <i class="fas fa-user mr-1"></i>Iniciar Sesión
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         </nav>
