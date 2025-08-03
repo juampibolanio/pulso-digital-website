@@ -1,7 +1,10 @@
 from django import forms
 from .models import Comentario
 
-class comentarioForm(forms.ModelForm):
+class ComentarioForm(forms.ModelForm):
     class Meta:
         model = Comentario
-        fields = ['nombre','contenido']
+        fields = ['texto']
+        widgets = {
+            'texto': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Escribí tu comentario...'}),
+        }
