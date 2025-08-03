@@ -46,12 +46,12 @@ def detalle_noticia(request, noticia_id):
             form = ComentarioForm(request.POST)
             if form.is_valid():
                 nuevo_comentario = form.save(commit=False)
-                nuevo_comentario.user = request.user
+                nuevo_comentario.usuario = request.user
                 nuevo_comentario.noticia = noticia
                 nuevo_comentario.save()
                 return redirect('apps.noticias:detalle_noticia', noticia_id=noticia_id)
         else:
-            return redirect('login')
+            return redirect('apps.usuarios:login')
     else:
         form = ComentarioForm()
 
@@ -191,4 +191,4 @@ def tendencias(request):
         'noticias_trending' : noticias_trending
     }
 
-    render(request, 'componentes/tendencias.html', context)
+    return render(request, 'componentes/tendencias.html', context)
