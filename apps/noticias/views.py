@@ -1,12 +1,24 @@
-from django.shortcuts import render
-from .models import Noticia, Categoria, ImagenNoticia
-from .forms import NoticiaForm, NoticiaImagenForm
+from django.shortcuts import get_object_or_404, render
+
+from apps.comentarios.forms import ComentarioForm
+from apps.comentarios.models import Comentario
+from .models import Categoria, ImagenNoticia, Noticia
+from .forms import NoticiaForm
 from django.shortcuts import redirect
+from django.utils import timezone
+from datetime import timedelta
+
+#Listar todas las categorías
+def categorias():
+    categorias = Categoria.objects.all()
+
+    return categorias
+
 
 #Listar todas las noticias
 def noticias(request):
     noticias = Noticia.objects.all()
-    categorias = Categoria.objects.all()
+    categorias_list = categorias()
 
     params = request.GET.get('categoria', '').strip()
 
@@ -15,22 +27,46 @@ def noticias(request):
 
     context = {
         "noticias": noticias,
-        "categorias": categorias
+        "categorias": categorias_list
     }   
 
     return render(request, 'noticias/noticias.html', context)
 
 #Noticia Detalle
+
 def detalle_noticia(request, noticia_id):
-    noticia = Noticia.objects.get(noticia_id=noticia_id)
-    imagenes = ImagenNoticia.objects.filter(noticia_id=noticia_id)
+    noticia = get_object_or_404(Noticia, pk=noticia_id)
+    comentarios = Comentario.objects.filter(noticia=noticia).order_by('-fecha')
+    imagenes = noticia.imagenes.all()
+    todas_las_categorias = categorias()
+    noticias_trending = Noticia.objects.all()[:5]
+
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+            form = ComentarioForm(request.POST)
+            if form.is_valid():
+                nuevo_comentario = form.save(commit=False)
+                nuevo_comentario.usuario = request.user
+                nuevo_comentario.noticia = noticia
+                nuevo_comentario.save()
+                return redirect('apps.noticias:detalle_noticia', noticia_id=noticia_id)
+        else:
+            return redirect('apps.usuarios:login')
+    else:
+        form = ComentarioForm()
 
     context = {
-        "detalle": noticia,
-        "imagen": imagenes
+        'detalle': noticia,
+        'comentarios': comentarios,
+        'form': form,
+        'imagen': imagenes,
+        'todas_las_categorias': todas_las_categorias,
+        'noticias_trending' : noticias_trending
     }
 
-    return render(request, 'noticias/detalle_noticia.html', context)
+    return render(request, 'noticias/detalle_noticia.html', context )
+
+
 
 #Crear noticia
 def crear_noticia(request):
@@ -112,16 +148,47 @@ def eliminar_noticia(request, noticia_id):
 def categoria(request):
     return render(request, 'category.html')
 
-# Página de inicio (index.html principal)
+# Página de inicio ( este es el index.html principal) - 
 def inicio(request):
-    return render(request, 'index.html')
+    todas_las_categorias = categorias()
+    # Noticias para otras secciones
+    noticia_principal = Noticia.objects.first()
+    noticias_secundarias = Noticia.objects.all()[1:5]
+    noticias_destacadas = Noticia.objects.all()[:2]
+    ultimas_noticias = Noticia.objects.all()[:8]
+    noticias_trending = Noticia.objects.all()[:5]
+
+    # noticias de las últimas 24 horas
+    ultima_hora = timezone.now() - timedelta(days=1)
+    noticias_ultima_hora = Noticia.objects.filter(fecha__gte=ultima_hora).order_by('-fecha')[:10]
+
+    context = {
+        'noticia_principal': noticia_principal,
+        'noticias_secundarias': noticias_secundarias,
+        'noticias_destacadas': noticias_destacadas,
+        'ultimas_noticias': ultimas_noticias,
+        'noticias_trending': noticias_trending,
+        'noticias_ultima_hora': noticias_ultima_hora,
+        'todas_las_categorias' : todas_las_categorias
+    }
+    
+    return render(request, 'index.html', context)
 
 #CREO LA VISTA NOSOTROS
 def nosotros(request):
     return render(request, 'nosotros.html')
 
 #CREO LA VISTA CONTACTO
-from django.shortcuts import render
-
 def contacto(request):
     return render(request, 'contact.html')
+
+def tendencias(request):
+    todas_las_categorias = categorias()
+    noticias_trending = Noticia.objects.all()[:5]
+
+    context = {
+        'todas_las_categorias': todas_las_categorias,
+        'noticias_trending' : noticias_trending
+    }
+
+    return render(request, 'componentes/tendencias.html', context)

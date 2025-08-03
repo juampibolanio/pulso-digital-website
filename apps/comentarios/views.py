@@ -10,14 +10,16 @@ def comentarios_por_noticia(request, noticia_id):
 
     if request.method == 'POST':
         form = ComentarioForm(request.POST)
+        form = ComentarioForm(request.POST)
         if form.is_valid():
             nuevo_comentario = form.save(commit=False)
             nuevo_comentario.noticia = noticia
-            nuevo_comentario.autor = request.user
+            nuevo_comentario.nombre = request.user
             nuevo_comentario.save()
             return redirect('comentario_por_noticia', noticia_id=noticia_id)
     
     else:
+        form = ComentarioForm()
         form = ComentarioForm()
 
     return render(request, 'comentarios/comentarios.html', {'noticia': noticia,

@@ -1,32 +1,219 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NOTICIAS | DETALLE</title>
-</head>
-<body>
-    <hr>
-    <h1>NOTICIA</h1>
-    <hr>
-    <br><br><br><br>
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ detalle.titulo }} | Noticia{% endblock %}
 
-    <div>
-        {% if imagen %}
-            {% for img in imagen %}
-                <img src="{{ img.imagen.url }}" alt="Imagen de la noticia">
-            {% endfor %}
-            {% else %}
-                <p>No hay imagen disponible</p>
-            {% endif %}
+{% block contenido %}
+<!-- Breaking News Start -->
+<div class="container-fluid mt-5 mb-3 pt-3">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-12">
+                <div class="d-flex justify-content-between">
+                    <div class="section-title border-right-0 mb-0" style="width: 180px;">
+                        <h4 class="m-0 text-uppercase font-weight-bold">Trending</h4>
+                    </div>
+                    <div class="owl-carousel tranding-carousel position-relative d-inline-flex align-items-center bg-white border border-left-0"
+                        style="width: calc(100% - 180px); padding-right: 100px;">
+                        <!-- Aquí puedes agregar noticias trending desde tu backend -->
+                        <div class="text-truncate"><a class="text-secondary text-uppercase font-weight-semi-bold" href="">Últimas noticias y actualizaciones importantes</a></div>
+                        <div class="text-truncate"><a class="text-secondary text-uppercase font-weight-semi-bold" href="">Mantente informado con las mejores noticias</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
+<!-- Breaking News End -->
 
-    <div>
-        <small>Categorias: {{detalle.categorias.all|join:' '}}</small>
-        <h2>{{detalle.titulo}}</h2>
-        <p><strong>{{detalle.fecha}}</strong> | Escrita por: {{detalle.autor}}</p>
-        <p>{{detalle.contenido}}</p>
+<!-- News With Sidebar Start -->
+<div class="container-fluid">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- News Detail Start -->
+                <div class="position-relative mb-3">
+                    <!-- Slider de imágenes -->
+                    {% if imagen and imagen.count > 1 %}
+                        <div id="imageCarousel" class="carousel slide" data-ride="carousel">
+                            <ol class="carousel-indicators">
+                                {% for img in imagen %}
+                                    <li data-target="#imageCarousel" data-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active"{% endif %}></li>
+                                {% endfor %}
+                            </ol>
+                            <div class="carousel-inner">
+                                {% for img in imagen %}
+                                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                        <img class="d-block w-100 img-fluid" src="{{ img.imagen.url }}" style="object-fit: cover; height: 400px;" alt="Imagen {{ forloop.counter }} de la noticia">
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <a class="carousel-control-prev" href="#imageCarousel" role="button" data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Anterior</span>
+                            </a>
+                            <a class="carousel-control-next" href="#imageCarousel" role="button" data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Siguiente</span>
+                            </a>
+                        </div>
+                    {% elif imagen %}
+                        <!-- Solo una imagen -->
+                        <img class="img-fluid w-100" src="{{ imagen.first.imagen.url }}" style="object-fit: cover; height: 400px;" alt="Imagen de la noticia">
+                    {% else %}
+                        <!-- Imagen por defecto -->
+                        <img class="img-fluid w-100" src="{% static 'img/default-news.jpg' %}" style="object-fit: cover; height: 400px;" alt="Imagen por defecto">
+                    {% endif %}
+                    
+                    <div class="bg-white border border-top-0 p-4">
+                        <div class="mb-3">
+                            <!-- Categorías -->
+                            {% for categoria in detalle.categorias.all %}
+                                <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2" href="">{{ categoria.nombre }}</a>
+                            {% endfor %}
+                            <a class="text-body" href="">{{ detalle.fecha|date:"M d, Y" }}</a>
+                        </div>
+                        
+                        <!-- Título -->
+                        <h1 class="mb-3 text-secondary text-uppercase font-weight-bold">{{ detalle.titulo }}</h1>
+                        
+                        <!-- Subtítulo -->
+                        {% if detalle.subtitulo %}
+                            <h3 class="text-uppercase font-weight-bold mb-3">{{ detalle.subtitulo }}</h3>
+                        {% endif %}
+                        
+                        <!-- Contenido -->
+                        <div class="news-content">
+                            {{ detalle.contenido|linebreaks }}
+                        </div>
+                    </div>
+                    
+                    <!-- Autor  -->
+                    <div class="d-flex justify-content-between bg-white border border-top-0 p-4">
+                        <div class="d-flex align-items-center">
+                            <img class="rounded-circle mr-2" src="{% static 'img/user-default.png' %}" width="25" height="25" alt="Avatar del autor">
+                            <span>{{ detalle.autor|default:"Redacción" }}</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <span class="ml-3"><i class="far fa-eye mr-2"></i>{{ detalle.vistas|default:"0" }}</span>
+                            <span class="ml-3"><i class="far fa-comment mr-2"></i>{{ comentarios.count|default:"0" }}</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- News Detail End -->
+            
+                <!-- agrego  los comentarios -->
+                {% include 'comentarios/comentarios.html' %}
+
+            </div>
+
+            <div class="col-lg-4">
+                <!-- Social Follow Start -->
+                {% include 'componentes/redes_sociales.html' %}
+                <!-- Social Follow End -->
+
+                <!-- Ads Start -->
+                {% include 'componentes/anuncio.html' %}
+                <!-- Ads End -->
+
+                <!-- Popular News Start -->
+                {% include 'componentes/tendencias.html' %}
+                <!-- Popular News End -->
+
+                <!-- Newsletter Start -->
+                {% include 'componentes/newsletter.html' %}
+                <!-- Newsletter End -->
+
+                <!-- Tags Start -->
+                {% include 'componentes/tags.html' %}
+                <!-- Tags End -->
+            </div>
+        </div>
     </div>
+</div>
+<!-- News With Sidebar End -->
 
-</body>
-</html>
+<style>
+/* Estilos para el carousel de imágenes  esto debo mover a otro archivo styles*/
+.carousel-item img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+}
+
+.carousel-indicators {
+    bottom: 10px;
+}
+
+.carousel-indicators li {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin: 0 3px;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    width: 5%;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+}
+
+.news-content p {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.news-content img {
+    max-width: 100%;
+    height: auto;
+    margin: 1rem 0;
+}
+
+.section-title {
+    position: relative;
+}
+
+.section-title::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 2px;
+    background: #007bff;
+}
+
+.tranding-carousel .owl-nav {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.media img {
+    border-radius: 50%;
+}
+
+@media (max-width: 768px) {
+    .col-lg-4 .mb-3 {
+        margin-bottom: 2rem !important;
+    }
+    
+    .carousel-item img {
+        height: 250px;
+    }
+    
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        width: 30px;
+        height: 30px;
+    }
+}
+</style>
+{% endblock %}
