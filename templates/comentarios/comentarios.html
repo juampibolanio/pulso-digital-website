@@ -6,29 +6,33 @@
     <title>Comentarios de la noticia</title>
 </head>
 <body>
-    <h1>{{ noticia. titulo }}</h1>
-    <p> noticia.contenido </p>
+    <h1>{{ noticia.titulo }}</h1>
+    <p>{{ noticia.contenido }}</p>
 
     <hr>
     <h2>Comentarios</h2>
     <ul>
         {% for comentario in comentarios %}
-        <li><strong>{{ comentario.autor }}</strong>: {{ comentario.texto }} ({{ comentario.fecha|date:"d/m/Y H:i" }})</li>
+            <li>
+                <strong>{{ comentario.usuario.username }}</strong>:
+                {{ comentario.contenido }} 
+                ({{ comentario.fecha|date:"d/m/Y H:i" }})
+            </li>
         {% empty %}
-        <li>No hay comentarios todavía.</li>
+            <li>No hay comentarios todavía.</li>
         {% endfor %}
     </ul>
 
     <hr>
     {% if user.is_authenticated %}
-    <h3>Agregar un comentario</h3>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Enviar</button>
-    </form>
+        <h3>Agregar un comentario</h3>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Enviar</button>
+        </form>
     {% else %}
-    <p><a href="{% url 'login' %}">Iniciá sesión</a> para comentar.</p>
+        <p><a href="{% url 'login' %}">Iniciá sesión</a> para comentar.</p>
     {% endif %}
 </body>
 </html>
