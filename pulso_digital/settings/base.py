@@ -16,7 +16,7 @@ from decouple import config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 #BASE_DIR = Path(__file__).resolve().parent.parent
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 # Quick-start development settings - unsuitable for production
@@ -56,7 +56,8 @@ ROOT_URLCONF = 'pulso_digital.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(os.path.dirname(BASE_DIR), 'templates')],
+        #'DIRS': [os.path.join(os.path.dirname(BASE_DIR), 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -72,6 +73,18 @@ TEMPLATES = [
 AUTH_USER_MODEL = 'usuarios.Usuario'
 
 WSGI_APPLICATION = 'pulso_digital.wsgi.application'
+
+# Configuración de base de datos MySQL
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',         # Motor de base de datos MySQL
+        'NAME': 'pulso_db',                           # Nombre de la base de datos
+        'USER': 'root',                               # Usuario MySQL
+        'PASSWORD': '',                               # Sin contraseña
+        'HOST': 'localhost',                          # Host local
+        'PORT': '3307',                               # Puerto MySQL
+    }
+}
 
 
 # Password validation
@@ -110,7 +123,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'staticfiles')
-STATICFILES_DIRS = ( os.path.join(os.path.dirname(BASE_DIR), 'static'), )
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+
+#STATICFILES_DIRS = ( os.path.join(os.path.dirname(BASE_DIR), 'static'), )
 
 # Media Files (Images, video)
 

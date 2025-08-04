@@ -1,6 +1,6 @@
 from django.urls import path
-from . import views
+#from . import views
 
 urlpatterns = [
-    path('noticia/<int:noticia_id>/', views.detalle_noticia, name='detalle_noticia'),
+    #path('<int:noticia_id>/', views.comentarios_por_noticia, name='comentario_por_noticia'),
 ]
