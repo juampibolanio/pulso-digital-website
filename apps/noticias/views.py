@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, render
-
+from django.core.paginator import Paginator
 from apps.comentarios.forms import ComentarioForm
 from apps.comentarios.models import Comentario
 from .models import Categoria, ImagenNoticia, Noticia
@@ -13,7 +13,6 @@ def categorias():
     categorias = Categoria.objects.all()
 
     return categorias
-
 
 #Listar todas las noticias
 def noticias(request):
@@ -33,7 +32,6 @@ def noticias(request):
     return render(request, 'noticias/noticias.html', context)
 
 #Noticia Detalle
-
 def detalle_noticia(request, noticia_id):
     noticia = get_object_or_404(Noticia, pk=noticia_id)
     comentarios = Comentario.objects.filter(noticia=noticia).order_by('-fecha')
@@ -65,8 +63,6 @@ def detalle_noticia(request, noticia_id):
     }
 
     return render(request, 'noticias/detalle_noticia.html', context )
-
-
 
 #Crear noticia
 def crear_noticia(request):
@@ -127,8 +123,6 @@ def editar_noticia(request, noticia_id):
 
     return render(request, 'noticias/editar_noticia.html', context)
 
-
-
 #Eliminar una noticia por su ID
 def eliminar_noticia(request, noticia_id):
     noticia = Noticia.objects.get(noticia_id=noticia_id)
@@ -151,10 +145,11 @@ def categoria(request):
 # Página de inicio ( este es el index.html principal) - 
 def inicio(request):
     todas_las_categorias = categorias()
+    todas_las_noticias = Noticia.objects.all().order_by('-noticia_id')
     # Noticias para otras secciones
     noticia_principal = Noticia.objects.first()
     noticias_secundarias = Noticia.objects.all()[1:5]
-    noticias_destacadas = Noticia.objects.all()[:2]
+    noticias_destacadas = Noticia.objects.all()[:10]
     ultimas_noticias = Noticia.objects.all()[:8]
     noticias_trending = Noticia.objects.all()[:5]
 
@@ -162,7 +157,12 @@ def inicio(request):
     ultima_hora = timezone.now() - timedelta(days=1)
     noticias_ultima_hora = Noticia.objects.filter(fecha__gte=ultima_hora).order_by('-fecha')[:10]
 
+    paginator = Paginator(todas_las_noticias, 8)
+    num_pagina = request.GET.get('page')
+    pagina_noticia = paginator.get_page(num_pagina)
+
     context = {
+        'pagina_noticia' : pagina_noticia,
         'noticia_principal': noticia_principal,
         'noticias_secundarias': noticias_secundarias,
         'noticias_destacadas': noticias_destacadas,
