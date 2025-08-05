@@ -7,7 +7,12 @@ class ComentarioForm(forms.ModelForm):
         model = Comentario
         fields = ["contenido"]
         widgets = {
-            "contenido": forms.Textarea(
-                attrs={"rows": 4, "placeholder": "Escribí tu comentario..."}
+            "contenido": forms.Textarea(attrs={
+                "class": 'form-control',
+                "rows": 4,
+                "placeholder": "Escribí tu comentario..."}
             ),
+        }
+        labels = {
+            "contenido": 'Mensaje *'
         }
