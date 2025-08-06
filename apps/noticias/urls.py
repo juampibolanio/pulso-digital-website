@@ -7,6 +7,7 @@ from .views import (
     crear_noticia,
     editar_noticia,
     eliminar_noticia,
+    categorias,
     categoria,  # <-- importá la vista categoria
     nosotros,   # <-- importá la vista nosotros
     contacto    # <-- importá la vista nosotros
@@ -15,7 +16,9 @@ from .views import (
 urlpatterns = [
     path('', noticias, name="todas_las_noticias"), #Muestra todas las noticias
     
-    path('categoria/', categoria, name='categoria'),  # <-- ruta para categorías
+    path('categorias/', categorias, name='categorias'),  # <-- ruta para categorías
+
+    path('categoria/<int:categoria_id>/', categoria, name='categoria_por_id'), # ruta para noticias x categoria
     
     path('nosotros/', nosotros, name='nosotros'),
 

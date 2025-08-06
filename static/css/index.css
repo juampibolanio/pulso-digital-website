@@ -244,3 +244,46 @@
     box-shadow: none !important;
     transform: none !important;
 }
+
+.stats-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.stats-info small {
+    color: #6c757d;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    transition: color 0.3s ease;
+}
+
+.stats-info small:hover {
+    color: #007bff;
+}
+
+.stats-info i {
+    color: #007bff;
+    font-size: 0.75rem;
+}
+
+/* Overlay stats styling */
+.overlay .text-white small i {
+    color: #ffc107;
+    margin-right: 0.25rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .stats-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+    
+    .overlay .mt-2,
+    .overlay .mt-1 {
+        margin-top: 0.5rem !important;
+    }
+}

@@ -27,6 +27,13 @@
                             <a class="text-white" href="">{{ noticia_principal.fecha|date:"M d, Y" }}</a>
                         </div>
                         <a class="h2 m-0 text-white text-uppercase font-weight-bold" href="{% url 'apps.noticias:detalle_noticia' noticia_principal.noticia_id %}">{{ noticia_principal.titulo|truncatechars:80 }}</a>
+                        
+                        <!-- Contador de comentarios en noticia principal -->
+                        <div class="mt-2">
+                            <span class="text-white">
+                                <i class="far fa-comment ml-3 mr-1"></i>{{ noticia_principal.comentarios.count|default:"0" }}
+                            </span>
+                        </div>
                     </div>
                 </div>
                 {% endif %}
@@ -45,11 +52,17 @@
                     <div class="overlay">
                         <div class="mb-2">
                             {% for categoria in noticia.categorias.all %}
-                            <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2" href="">{{ categoria.nombre }}</a>
+                            <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2 mb-1" href="">{{ categoria.nombre }}</a>
                             {% endfor %}
                             <a class="text-white" href=""><small>{{ noticia.fecha|date:"M d, Y" }}</small></a>
                         </div>
                         <a class="h6 m-0 text-white text-uppercase font-weight-semi-bold" href="{% url 'apps.noticias:detalle_noticia' noticia.noticia_id %}">{{ noticia.titulo|truncatechars:40 }}</a>
+                        
+                        <div class="mt-1">
+                            <small class="text-white">
+                                <i class="far fa-comment mr-1"></i>{{ noticia.comentarios.count|default:"0" }}
+                            </small>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -70,7 +83,7 @@
             <div class="col-12">
                 <div class="d-flex justify-content-between">
                     <div class="bg-primary text-white text-center font-weight-medium py-2" style="width: 170px;">
-                        Última hora
+                        <i class="fas fa-bolt mr-2"></i>Última hora
                     </div>
                     <div class="owl-carousel tranding-carousel position-relative d-inline-flex align-items-center ml-3" style="width: calc(100% - 170px); padding-right: 90px;">
                         {% for noticia in noticias_ultima_hora %}
@@ -96,7 +109,9 @@
 <div class="container-fluid pt-5 mb-3 noticia-card-especial">
     <div class="container">
         <div class="section-title">
-            <h4 class="m-0 text-uppercase font-weight-bold">Noticias Destacadas</h4>
+            <h4 class="m-0 text-uppercase font-weight-bold">
+                <i class="fas fa-star mr-2 text-warning"></i>Noticias Destacadas
+            </h4>
         </div>
         <div class="owl-carousel news-carousel carousel-item-4 position-relative">
             {% for noticia in noticias_destacadas %}
@@ -108,12 +123,15 @@
                 {% endif %}
                 <div class="overlay">
                     <div class="mb-2">
-                        {% for categoria in noticia.categorias.all %}
-                        <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2" href="">{{ categoria.nombre }}</a>
-                        {% endfor %} <br>
                         <a class="text-white" href=""><small>{{ noticia.fecha|date:"M d, Y" }}</small></a>
                     </div>
                     <a class="h6 m-0 text-white text-uppercase font-weight-semi-bold" href="{% url 'apps.noticias:detalle_noticia' noticia.noticia_id %}">{{ noticia.titulo|truncatechars:50 }}</a>
+                    
+                    <div class="mt-1">
+                        <small class="text-white">
+                            <i class="far fa-comment mr-1"></i>{{ noticia.comentarios.count|default:"0" }} comentarios
+                        </small>
+                    </div>
                 </div>
             </div>
             {% endfor %}
@@ -132,7 +150,9 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="section-title mb-4">
-                            <h4 class="m-0 text-uppercase font-weight-bold position-relative">Últimas noticias</h4>
+                            <h4 class="m-0 text-uppercase font-weight-bold position-relative">
+                                <i class="fas fa-newspaper mr-2 text-primary"></i>Últimas noticias
+                            </h4>
                             <a class="text-secondary font-weight-medium text-decoration-none"
                                 href="{% url 'apps.noticias:todas_las_noticias' %}">Ver todas</a>
                         </div>
@@ -155,7 +175,7 @@
                                     <a class="category-badge" href="#">{{ categoria.nombre }}</a>
                                     {% endfor %}
                                     <div class="mt-2">
-                                        <a class="text-body" href="#"><small>{{ noticia.fecha|date:"M d, Y"}}</small></a>
+                                        <a class="text-body" href="#"><small><i class="far fa-calendar mr-1"></i>{{ noticia.fecha|date:"M d, Y"}}</small></a>
                                     </div>
                                 </div>
 
@@ -176,11 +196,14 @@
                                     <div class="author-info">
                                         <img class="author-avatar" src="{% static 'img/user-default.png' %}"
                                             alt="{{ noticia.autor.username }}">
-                                        <small class="font-weight-medium">{{ noticia.autor.username }}</small>
+                                        <small class="font-weight-medium">
+                                            <i class="fas fa-user mr-1"></i>{{ noticia.autor.username }}
+                                        </small>
                                     </div>
                                     <div class="stats-info">
-                                        <small><i class="far fa-eye"></i> 12,345</small>
-                                        <small><i class="far fa-comment"></i> 123</small>
+                                        <small class="ml-2">
+                                            <i class="far fa-comment mr-1"></i>{{ noticia.comentarios.count|default:"0" }}
+                                        </small>
                                     </div>
                                 </div>
                             </div>
@@ -205,6 +228,7 @@
                                 {% endif %}
 
                                 <div class="pagination-info">
+                                    <i class="fas fa-file-alt mr-1"></i>
                                     Página {{ pagina_noticia.number }} de {{ pagina_noticia.paginator.num_pages }}
                                 </div>
 
@@ -246,6 +270,5 @@
     </div>
 </div>
 <!-- News With Sidebar End -->
-
 
 {% endblock %}

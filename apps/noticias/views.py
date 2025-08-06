@@ -11,22 +11,58 @@ from datetime import timedelta
 #Listar todas las categorías
 def categorias():
     categorias = Categoria.objects.all()
-
+    print(categorias)
     return categorias
+
+# Filtro para noticias por categoria
+def categoria(request, categoria_id=None):
+    todas_las_categorias = categorias()
+    noticias_trending = Noticia.objects.all()[:5]
+
+    if categoria_id:
+        # Filtrar noticias por ID de categoría
+        categoria_seleccionada = get_object_or_404(Categoria, pk=categoria_id)
+        noticias_filtradas = Noticia.objects.filter(categorias=categoria_seleccionada).order_by('-noticia_id')
+    else:
+        # Mostrar todas las noticias
+        noticias_filtradas = Noticia.objects.all().order_by('-noticia_id')
+        categoria_seleccionada = None
+    
+    # Paginación
+    paginator = Paginator(noticias_filtradas, 12)
+    num_pagina = request.GET.get('page')
+    pagina_noticia = paginator.get_page(num_pagina)
+    
+    context = {
+        'noticias': pagina_noticia,
+        'todas_las_categorias': todas_las_categorias,
+        'categoria_seleccionada': categoria_seleccionada,
+        'total_noticias': noticias_filtradas.count(),
+        'noticias_trending' : noticias_trending
+    }
+    
+    return render(request, 'noticias/categoria.html', context)
 
 #Listar todas las noticias
 def noticias(request):
     noticias = Noticia.objects.all()
     categorias_list = categorias()
-
+    noticias_trending = Noticia.objects.all()[:5]
     params = request.GET.get('categoria', '').strip()
 
     if params:
         noticias = noticias.filter(categorias__nombre__icontains=params)
 
+    
+    paginator = Paginator(noticias, 6)  
+    num_pagina = request.GET.get('page')
+    pagina_noticia = paginator.get_page(num_pagina)
+
     context = {
-        "noticias": noticias,
-        "categorias": categorias_list
+        "noticias": pagina_noticia,  
+        "categorias": categorias_list,
+        "todas_las_categorias" : categorias_list,
+        "noticias_trending" : noticias_trending
     }   
 
     return render(request, 'noticias/noticias.html', context)
@@ -86,7 +122,6 @@ def crear_noticia(request):
 
     return render(request, 'noticias/crear_noticia.html', context)
 
-
 #Editar una noticia por su ID
 def editar_noticia(request, noticia_id):
     noticia = Noticia.objects.get(noticia_id=noticia_id)
@@ -136,11 +171,6 @@ def eliminar_noticia(request, noticia_id):
     }
 
     return render(request, 'noticias/eliminar_noticia.html', context)
-
-# CREO LA VISTA CATEGORIA 
-
-def categoria(request):
-    return render(request, 'category.html')
 
 # Página de inicio ( este es el index.html principal) - 
 def inicio(request):

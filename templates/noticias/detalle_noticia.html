@@ -15,8 +15,8 @@
                     <div class="owl-carousel tranding-carousel position-relative d-inline-flex align-items-center bg-white border border-left-0"
                         style="width: calc(100% - 180px); padding-right: 100px;">
                         
-                        <div class="text-truncate"><a class="text-secondary text-uppercase font-weight-semi-bold" href="">Últimas noticias y actualizaciones importantes</a></div>
-                        <div class="text-truncate"><a class="text-secondary text-uppercase font-weight-semi-bold" href="">Mantente informado con las mejores noticias</a></div>
+                        <div class="text-truncate"><a class="text-secondary text-uppercase font-weight-semi-bold" href="{% url 'inicio' %}">Últimas noticias y actualizaciones importantes</a></div>
+                        <div class="text-truncate"><a class="text-secondary text-uppercase font-weight-semi-bold" href="{% url 'inicio' %}">Mantente informado con las mejores noticias</a></div>
                     </div>
                 </div>
             </div>
@@ -68,7 +68,7 @@
                         <div class="mb-3">
                             <!-- Categorías -->
                             {% for categoria in detalle.categorias.all %}
-                                <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2" href="">{{ categoria.nombre }}</a>
+                                <a style="color: white;" class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2" href="">{{ categoria.nombre }}</a>
                             {% endfor %}
                             <a class="text-body" href="">{{ detalle.fecha|date:"M d, Y" }}</a>
                         </div>
@@ -94,7 +94,6 @@
                             <span>{{ detalle.autor|default:"Redacción" }}</span>
                         </div>
                         <div class="d-flex align-items-center">
-                            <span class="ml-3"><i class="far fa-eye mr-2"></i>{{ detalle.vistas|default:"0" }}</span>
                             <span class="ml-3"><i class="far fa-comment mr-2"></i>{{ comentarios.count|default:"0" }}</span>
                         </div>
                     </div>

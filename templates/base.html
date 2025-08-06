@@ -11,7 +11,7 @@
     <meta content="Free HTML Templates" name="description">
 
     <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
+    <link href="{% static 'img/favicon.svg' %}" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -24,7 +24,6 @@
     <link href="{% static 'lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
-    <!--<link href="css/style.css" rel="stylesheet">-->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
 </head>
@@ -40,17 +39,9 @@
                         <li class="nav-item border-right border-secondary">
                             <a class="nav-link text-body small" href="#">{% now "j F Y H:i" %}</a>
                         </li>
-                        <!--<li class="nav-item border-right border-secondary">
-                            <a class="nav-link text-body small" href="#">Advertise</a>
-                        </li>
-                        -->
                         <li class="nav-item border-right border-secondary">
-                            <a class="nav-link text-body small" href="#">Contacto</a>
+                            <a class="nav-link text-body small" href="{% url 'apps.noticias:contacto' %}">Contacto</a>
                         </li>
-                        <!--<li class="nav-item">
-                            <a class="nav-link text-body small" href="#">Login</a>
-                        </li>
-                        -->
                     </ul>
                 </nav>
             </div>
@@ -86,10 +77,6 @@
                             class="text-secondary font-weight-normal">Digital</span></h1>
                 </a>
             </div>
-            <!-- <div class="col-lg-8 text-center text-lg-right">
-                <a href="https://htmlcodex.com"><img class="img-fluid" src="img/ads-728x90.png" alt=""></a>
-            </div>  
-            -->
         </div>
     </div>
     <!-- Topbar End -->
@@ -109,22 +96,33 @@
                 <div class="navbar-nav mr-auto py-0">
                     <a href="{% url 'inicio' %}" class="nav-item nav-link active">Inicio</a>
 
-                    <a href="{% url 'apps.noticias:categoria' %}" class="nav-item nav-link">Categorías</a>
+                    <!-- Desplegable de Categorías -->
+                    <div class="nav-item dropdown">
+                        <a href="{% url 'apps.noticias:categorias' %}" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                            Categorías
+                        </a>
+                        <div class="dropdown-menu rounded-0 m-0">
+                            <a href="{% url 'apps.noticias:todas_las_noticias' %}" class="dropdown-item">
+                                <i class="fas fa-list  mr-2"></i>Todas las Categorías
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            {% for categoria in categorias_menu %}
+                                <a href="{% url 'apps.noticias:categoria_por_id' categoria.categoria_id %}" class="dropdown-item">
+                                    <i class="fas fa-dot-circle mr-2" style="font-size: 0.8em;"></i>{{ categoria.nombre }}
+                                </a>
+                            {% empty %}
+                                <span class="dropdown-item text-muted">
+                                    <i class="fas fa-exclamation-circle mr-2"></i>No hay categorías disponibles
+                                </span>
+                            {% endfor %}
+                        </div>
+                    </div>
 
                     <a href="{% url 'apps.noticias:nosotros' %}" class="nav-item nav-link">Nosotros</a>
-
                     <a href="{% url 'apps.noticias:contacto' %}" class="nav-item nav-link">Contacto</a>
                 </div>
                 <div class="d-flex align-items-center ml-auto">
-                    <!-- Barra de búsqueda -->
-                    <div class="input-group mr-3 d-none d-lg-flex" style="width: 250px;">
-                        <input type="text" class="form-control border-0" placeholder="Keyword">
-                        <div class="input-group-append">
-                            <button class="input-group-text bg-primary text-dark border-0 px-3"><i
-                                    class="fa fa-search"></i></button>
-                        </div>
-                    </div>
-                    
+
                     <!-- Sección de autenticación -->
                     {% if user.is_authenticated %}
                         <!-- Usuario autenticado -->
@@ -160,8 +158,8 @@
     <!-- Navbar End -->
 
     {% block contenido %}
-    {% endblock contenido %}
 
+    {% endblock contenido %}
 
     <!-- Footer Start -->
     <div class="container-fluid bg-dark pt-5 px-sm-3 px-md-5 mt-5">
@@ -215,27 +213,9 @@
             <div class="col-lg-4 col-md-6 mb-5">
                 <h5 class="mb-4 text-white text-uppercase font-weight-bold">Categorías</h5>
                 <div class="m-n1">
-                    <a href="" class="btn btn-sm btn-secondary m-1">Politics</a>
-                    <a href="" class="btn btn-sm btn-secondary m-1">Business</a>
-                    <a href="" class="btn btn-sm btn-secondary m-1">Corporate</a>
-                    <a href="" class="btn btn-sm btn-secondary m-1">Business</a>
-                    <a href="" class="btn btn-sm btn-secondary m-1">Health</a>
-                    <a href="" class="btn btn-sm btn-secondary m-1">Education</a>
-                    <a href="" class="btn btn-sm btn-secondary m-1">Science</a>
-                    <a href="" class="btn btn-sm btn-secondary m-1">Business</a>
-                    <a href="" class="btn btn-sm btn-secondary m-1">Foods</a>
-                    <a href="" class="btn btn-sm btn-secondary m-1">Entertainment</a>
-                    <a href="" class="btn btn-sm btn-secondary m-1">Travel</a>
-                    <a href="" class="btn btn-sm btn-secondary m-1">Lifestyle</a>
-                    <a href="" class="btn btn-sm btn-secondary m-1">Politics</a>
-                    <a href="" class="btn btn-sm btn-secondary m-1">Business</a>
-                    <a href="" class="btn btn-sm btn-secondary m-1">Corporate</a>
-                    <a href="" class="btn btn-sm btn-secondary m-1">Business</a>
-                    <a href="" class="btn btn-sm btn-secondary m-1">Health</a>
-                    <a href="" class="btn btn-sm btn-secondary m-1">Education</a>
-                    <a href="" class="btn btn-sm btn-secondary m-1">Science</a>
-                    <a href="" class="btn btn-sm btn-secondary m-1">Business</a>
-                    <a href="" class="btn btn-sm btn-secondary m-1">Foods</a>
+                    {% for categoria in categorias_menu %}
+                        <a href="{% url 'apps.noticias:categoria_por_id' categoria.categoria_id %}" class="btn btn-sm btn-secondary m-1">{{ categoria.nombre }}</a>
+                    {% endfor %}
                 </div>
             </div>
 
