@@ -75,18 +75,6 @@ AUTH_USER_MODEL = 'usuarios.Usuario'
 
 WSGI_APPLICATION = 'pulso_digital.wsgi.application'
 
-# Configuración de base de datos MySQL
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',         # Motor de base de datos MySQL
-        'NAME': 'pulso_db',                           # Nombre de la base de datos
-        'USER': 'root',                               # Usuario MySQL
-        'PASSWORD': '',                               # Sin contraseña
-        'HOST': 'localhost',                          # Host local
-        'PORT': '3307',                               # Puerto MySQL
-    }
-}
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators

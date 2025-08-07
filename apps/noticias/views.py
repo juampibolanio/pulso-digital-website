@@ -55,7 +55,6 @@ def categoria(request, categoria_id=None):
     return render(request, 'noticias/categoria.html', context)
 
 # Listar todas las noticias
-
 def noticias(request):
     noticias = Noticia.objects.all()
     categorias_list = Categoria.objects.all()
