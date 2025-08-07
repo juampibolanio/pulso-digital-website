@@ -6,9 +6,13 @@ body {
     overflow: hidden;
 }
 
+.login-container h2 {
+    font-size: 2rem;
+}
+
 .left-section {
     flex: 2;
-    background-image: url('../img/login_robot.png');
+    background-image: url('/static/img/login_robot.png');
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -34,51 +38,91 @@ body {
 .login-container {
     width: 100%;
     max-width: 360px;
-    margin-top: -40px;
 }
 
 .login-container h2 {
     text-align: center;
 }
 
-.pulso {
-    color: #000000;
+.social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #1f2b3a;
+    color: white;
+    border: none;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+    text-decoration: none;
+    margin-bottom: 12px;
 }
 
-.digital {
-    color: #0284C7;
+.social-btn img {
+    height: 20px;
+    margin-right: 10px;
 }
 
-.titulo-reset {
-    margin-bottom: 8px;
-    margin-top: -60px;
-    font-size: 2.5rem;
-}
-
-.correo-img {
-    display: block;
-    margin: 20px auto;
-    max-width: 120px;
-}
-
-.texto-negrita {
+.divider {
     text-align: center;
-    font-weight: bold;
-    margin-top: 40px;
-    font-size: 1.3rem;
+    margin: 20px 0;
+    position: relative;
 }
 
-.mensaje-central {
-    text-align: center;
-    font-size: 1.2rem;
-    margin-top: 20px;
-    margin-bottom: 100px;
-    color: #333;
+.divider::before,
+.divider::after {
+    content: "";
+    height: 1px;
+    background: #aaa;
+    position: absolute;
+    top: 50%;
+    width: 40%;
+}
+
+.divider::before {
+    left: 0;
+}
+
+.divider::after {
+    right: 0;
+}
+
+.divider span {
+    background: #e0e0e0;
+    padding: 0 10px;
+}
+
+.form-group2 {
+    margin: 12px 0;
+    width: 100%;
+}
+
+.form-group2 input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #0089d0;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.forgot-password {
+    font-size: 14px;
+    margin-top: 5px;
+    text-align: left;
+}
+
+.forgot-password a {
+    color: #000;
+    text-decoration: none;
 }
 
 .login-btn {
     margin-top: 20px;
-    background-color: #0284C7;
+    background-color: #1f2b3a;
     color: white;
     padding: 12px;
     border: none;
@@ -91,6 +135,18 @@ body {
     align-items: center;
     justify-content: center;
     margin: 8px 0;
+}
+
+.register {
+    margin-top: 16px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.register a {
+    font-weight: bold;
+    color: #000;
+    text-decoration: none;
 }
 
 .error-messages {

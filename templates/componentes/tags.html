@@ -7,10 +7,10 @@
         <div class="d-flex flex-wrap m-n1">
             <!-- cargo categorias desde la base de datos -->
             {% for categoria in todas_las_categorias %}
-            <a href="#" class="btn btn-sm btn-outline-secondary m-1">{{ categoria.nombre }}</a>
+            <a href="{% url 'apps.noticias:categoria_por_id' categoria.categoria_id %}" class="btn btn-sm btn-outline-secondary m-1">{{ categoria.nombre }}</a>
             {% empty %}
             <!-- y si no hay categorías en la BD -->
-            <a href="#" class="btn btn-sm btn-outline-secondary m-1">Sin categorías</a>
+            <a href="{% url 'apps.noticias:todas_las_noticias' %}" class="btn btn-sm btn-outline-secondary m-1">Sin categorías</a>
             {% endfor %}
         </div>
     </div>
