@@ -68,7 +68,7 @@
                         <div class="mb-3">
                             <!-- Categorías -->
                             {% for categoria in detalle.categorias.all %}
-                                <a style="color: white;" class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2" href="">{{ categoria.nombre }}</a>
+                                <a style="color: white;" class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2" href="{% url 'apps.noticias:categoria_por_id' categoria.categoria_id %}">{{ categoria.nombre }}</a>
                             {% endfor %}
                             <a class="text-body" href="">{{ detalle.fecha|date:"M d, Y" }}</a>
                         </div>
@@ -90,8 +90,14 @@
                     <!-- Autor  -->
                     <div class="d-flex justify-content-between bg-white border border-top-0 p-4">
                         <div class="d-flex align-items-center">
-                            <img class="rounded-circle mr-2" src="{% static 'img/user-default.png' %}" width="25" height="25" alt="Avatar del autor">
-                            <span>{{ detalle.autor|default:"Redacción" }}</span>
+                            {% if detalle.autor.imagen_perfil %}
+                                <img src="{{ detalle.autor.imagen_perfil.url }}" alt="{{ noticia.autor.username }}"
+                                    class="img-fluid mr-3 " style="width: 35px; height: 35px; border-radius: 50%; object-fit: cover;">
+                            {% else %}
+                                <img src="{% static 'img/user-default.png' %}" alt="Avatar por defecto" class="mr-3"
+                                    style="width: 35px; height: 35px; border-radius: 50%; object-fit: cover;">
+                            {% endif %}
+                            <span>{{ detalle.autor.get_full_name|default:detalle.autor.username }}</span>
                         </div>
                         <div class="d-flex align-items-center">
                             <span class="ml-3"><i class="far fa-comment mr-2"></i>{{ comentarios.count|default:"0" }}</span>

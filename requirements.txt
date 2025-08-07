@@ -1,5 +1,0 @@
-Dependencias necesarias
-
-Pillow -> pip install pillow 
-python-decouple -> pip install python-decouple
-mysqlclient -> pip install mysqlclient

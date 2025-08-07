@@ -14,12 +14,12 @@
         {% if comentarios %}
         {% for comentario in comentarios %}
         <div class="media {% if not forloop.last %}mb-4{% endif %}">
-            <!-- Usando el nuevo campo 'usuario' -->
+            
             {% if comentario.usuario.imagen_perfil %}
             <img src="{{ comentario.usuario.imagen_perfil.url }}" alt="{{ comentario.usuario.username }}"
                 class="img-fluid mr-3 mt-1" style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover;">
             {% else %}
-            <!-- Imagen por defecto si no tiene foto de perfil -->
+            
             <img src="{% static 'img/user-default.png' %}" alt="Avatar por defecto" class="mr-3 mt-1"
                 style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover;">
             {% endif %}

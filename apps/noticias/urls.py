@@ -8,27 +8,27 @@ from .views import (
     editar_noticia,
     eliminar_noticia,
     categorias,
-    categoria,  # <-- importá la vista categoria
-    nosotros,   # <-- importá la vista nosotros
-    contacto    # <-- importá la vista nosotros
+    categoria,  
+    nosotros,   
+    contacto    
 )
 
 urlpatterns = [
-    path('', noticias, name="todas_las_noticias"), #Muestra todas las noticias
+    path('', noticias, name="todas_las_noticias"), # Muestra todas las noticias
     
-    path('categorias/', categorias, name='categorias'),  # <-- ruta para categorías
+    path('categorias/', categorias, name='categorias'),  # ruta para categorías
 
-    path('categoria/<int:categoria_id>/', categoria, name='categoria_por_id'), # ruta para noticias x categoria
+    path('categoria/<int:categoria_id>/', categoria, name='categoria_por_id'), # Ruta para noticias x categoria
     
-    path('nosotros/', nosotros, name='nosotros'),
+    path('nosotros/', nosotros, name='nosotros'), # Ruta para template Nosotros
 
-    path('contact/', contacto, name='contacto'),
+    path('contact/', contacto, name='contacto'), # Ruta para template contacto
     
-    path('<int:noticia_id>/', detalle_noticia, name="detalle_noticia"), #Muestra la noticia al detalle
+    path('<int:noticia_id>/', detalle_noticia, name="detalle_noticia"), # Muestra la noticia al detalle
 
-    path('crear/', crear_noticia, name="crear_noticia"), #Crear una noticia
+    path('crear/', crear_noticia, name="crear_noticia"), # Crear una noticia
 
-    path('editar/<int:noticia_id>/', editar_noticia, name ="editar_noticia"), #Editar una noticia
+    path('editar/<int:noticia_id>/', editar_noticia, name ="editar_noticia"), # Editar una noticia
     
-    path('eliminar/<int:noticia_id>/', eliminar_noticia, name ="eliminar_noticia"), #Eliminar una noticia
+    path('eliminar/<int:noticia_id>/', eliminar_noticia, name ="eliminar_noticia"), # Eliminar una noticia
 ]

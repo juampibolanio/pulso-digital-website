@@ -1,8 +1,6 @@
 {% load static %}
 
-
 <!-- Popular News Start -->
-
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/tendencias.css' %}">
 {% endblock %}
@@ -26,7 +24,7 @@
             <div class="trending-content">
                 <div class="trending-meta">
                     {% for categoria in noticia.categorias.all %}
-                        <a class="trending-category" href="#">{{ categoria.nombre }}</a>
+                        <a class="trending-category" href="{% url 'apps.noticias:categoria_por_id' categoria.categoria_id %}">{{ categoria.nombre }}</a>
                     {% endfor %}
                     <a class="trending-date" href="#">
                         <small>{{ noticia.fecha|date:"M d, Y" }}</small>

@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, render
 from django.core.paginator import Paginator
 from apps.comentarios.forms import ComentarioForm
 from apps.comentarios.models import Comentario
+from django.db.models import Count
 from .models import Categoria, ImagenNoticia, Noticia
 from .forms import NoticiaForm
 from django.shortcuts import redirect
@@ -11,63 +12,89 @@ from datetime import timedelta
 #Listar todas las categorías
 def categorias():
     categorias = Categoria.objects.all()
-    print(categorias)
     return categorias
 
 # Filtro para noticias por categoria
 def categoria(request, categoria_id=None):
-    todas_las_categorias = categorias()
+    todas_las_categorias = Categoria.objects.all()
     noticias_trending = Noticia.objects.all()[:5]
 
     if categoria_id:
-        # Filtrar noticias por ID de categoría
         categoria_seleccionada = get_object_or_404(Categoria, pk=categoria_id)
-        noticias_filtradas = Noticia.objects.filter(categorias=categoria_seleccionada).order_by('-noticia_id')
+        noticias = Noticia.objects.filter(categorias=categoria_seleccionada)
     else:
-        # Mostrar todas las noticias
-        noticias_filtradas = Noticia.objects.all().order_by('-noticia_id')
         categoria_seleccionada = None
-    
-    # Paginación
-    paginator = Paginator(noticias_filtradas, 12)
+        noticias = Noticia.objects.all()
+
+    # Anotar cantidad de comentarios
+    noticias = noticias.annotate(num_comentarios=Count('comentarios'))
+
+    # Filtros por orden
+    orden = request.GET.get('orden', '')
+    sentido = request.GET.get('sentido', 'desc')
+
+    if orden == 'comentarios':
+        noticias = noticias.order_by('num_comentarios' if sentido == 'asc' else '-num_comentarios')
+    elif orden == 'fecha':
+        noticias = noticias.order_by('fecha' if sentido == 'asc' else '-fecha')
+    else:
+        noticias = noticias.order_by('-noticia_id')
+
+    paginator = Paginator(noticias, 12)
     num_pagina = request.GET.get('page')
     pagina_noticia = paginator.get_page(num_pagina)
-    
+
     context = {
         'noticias': pagina_noticia,
         'todas_las_categorias': todas_las_categorias,
         'categoria_seleccionada': categoria_seleccionada,
-        'total_noticias': noticias_filtradas.count(),
-        'noticias_trending' : noticias_trending
+        'total_noticias': noticias.count(),
+        'noticias_trending': noticias_trending
     }
-    
+
     return render(request, 'noticias/categoria.html', context)
 
-#Listar todas las noticias
+# Listar todas las noticias
+
 def noticias(request):
     noticias = Noticia.objects.all()
-    categorias_list = categorias()
+    categorias_list = Categoria.objects.all()
     noticias_trending = Noticia.objects.all()[:5]
-    params = request.GET.get('categoria', '').strip()
 
-    if params:
-        noticias = noticias.filter(categorias__nombre__icontains=params)
+    # Filtro por categoría
+    categoria_nombre = request.GET.get('categoria', '').strip()
+    if categoria_nombre:
+        noticias = noticias.filter(categorias__nombre__icontains=categoria_nombre)
 
-    
-    paginator = Paginator(noticias, 6)  
+    # Anotar cantidad de comentarios
+    noticias = noticias.annotate(num_comentarios=Count('comentarios'))
+
+    # Filtros por orden
+    orden = request.GET.get('orden', '')  
+    sentido = request.GET.get('sentido', 'desc')  
+
+    if orden == 'comentarios':
+        noticias = noticias.order_by('num_comentarios' if sentido == 'asc' else '-num_comentarios')
+    elif orden == 'fecha':
+        noticias = noticias.order_by('fecha' if sentido == 'asc' else '-fecha')
+    else:
+        noticias = noticias.order_by('-noticia_id')  
+
+    # Paginación
+    paginator = Paginator(noticias, 6)
     num_pagina = request.GET.get('page')
     pagina_noticia = paginator.get_page(num_pagina)
 
     context = {
-        "noticias": pagina_noticia,  
+        "noticias": pagina_noticia,
         "categorias": categorias_list,
-        "todas_las_categorias" : categorias_list,
-        "noticias_trending" : noticias_trending
-    }   
+        "todas_las_categorias": categorias_list,
+        "noticias_trending": noticias_trending
+    }
 
     return render(request, 'noticias/noticias.html', context)
 
-#Noticia Detalle
+# Detalle de la noticia
 def detalle_noticia(request, noticia_id):
     noticia = get_object_or_404(Noticia, pk=noticia_id)
     comentarios = Comentario.objects.filter(noticia=noticia).order_by('-fecha')
@@ -100,7 +127,7 @@ def detalle_noticia(request, noticia_id):
 
     return render(request, 'noticias/detalle_noticia.html', context )
 
-#Crear noticia
+# Crear noticia
 def crear_noticia(request):
     if request.method == 'POST':
         form = NoticiaForm(request.POST)
@@ -122,7 +149,7 @@ def crear_noticia(request):
 
     return render(request, 'noticias/crear_noticia.html', context)
 
-#Editar una noticia por su ID
+# Editar una noticia por su ID
 def editar_noticia(request, noticia_id):
     noticia = Noticia.objects.get(noticia_id=noticia_id)
 
@@ -158,7 +185,7 @@ def editar_noticia(request, noticia_id):
 
     return render(request, 'noticias/editar_noticia.html', context)
 
-#Eliminar una noticia por su ID
+# Eliminar una noticia por su ID
 def eliminar_noticia(request, noticia_id):
     noticia = Noticia.objects.get(noticia_id=noticia_id)
 
@@ -204,13 +231,15 @@ def inicio(request):
     
     return render(request, 'index.html', context)
 
-#CREO LA VISTA NOSOTROS
+# Vista Nosotros
 def nosotros(request):
     return render(request, 'nosotros.html')
 
-#CREO LA VISTA CONTACTO
+# Vista Contacto
 def contacto(request):
     return render(request, 'contact.html')
+
+# Noticias en tendencia
 
 def tendencias(request):
     todas_las_categorias = categorias()

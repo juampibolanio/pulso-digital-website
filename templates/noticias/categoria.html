@@ -25,7 +25,32 @@
                 </div>
 
                 <div class="row">
+                    <!-- Filtros de orden -->
+                    <form method="get" class="form-inline mb-4 ml-5">
+                        <div class="form-group mr-2">
+                            <label for="orden" class="mr-2 font-weight-bold">Ordenar por:</label>
+                            <select name="orden" id="orden" class="form-control">
+                                <option value="">-- Seleccionar --</option>
+                                <option value="comentarios" {% if request.GET.orden == 'comentarios' %}selected{% endif %}>N° de comentarios</option>
+                                <option value="fecha" {% if request.GET.orden == 'fecha' %}selected{% endif %}>Fecha</option>
+                        </select>
+                        </div>
 
+                        <div class="form-group mr-2">
+                            <label for="sentido" class="mr-2 font-weight-bold">Orden:</label>
+                            <select name="sentido" id="sentido" class="form-control">
+                                <option value="desc" {% if request.GET.sentido == 'desc' %}selected{% endif %}>Descendente</option>
+                                <option value="asc" {% if request.GET.sentido == 'asc' %}selected{% endif %}>Ascendente</option>
+                            </select>
+                        </div>
+
+                    <!-- esto es para msantener filtros anteriores como categoria o búsqueda -->
+                        {% if request.GET.categoria %}
+                        <input type="hidden" name="categoria" value="{{ request.GET.categoria }}">
+                        {% endif %}
+
+                        <button style="color: white;" type="submit" class="btn btn-primary">Aplicar</button>
+                    </form>
                     <!-- Lista de noticias -->
                     {% if noticias %}
                         {% for noticia in noticias %}
@@ -64,13 +89,17 @@
                                 <div class="card-footer">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="author-info">
-                                            <img class="author-avatar" src="{% static 'img/user-default.png' %}"
-                                                alt="{{ noticia.autor.username }}">
-                                            <small class="font-weight-medium">{{ noticia.autor.username }}</small>
+                                            {% if noticia.autor.imagen_perfil %}
+                                            <img src="{{ noticia.autor.imagen_perfil.url }}" alt="{{ noticia.autor.username }}"
+                                                    class="img-fluid " style="width: 35px; height: 35px; border-radius: 50%; object-fit: cover;">
+                                            {% else %}
+                                                <img src="{% static 'img/user-default.png' %}" alt="Avatar por defecto" class=""
+                                                    style="width: 35px; height: 35px; border-radius: 50%; object-fit: cover;">
+                                            {% endif %}
+                                            <small class="font-weight-medium">{{ noticia.autor.get_full_name|default:noticia.autor.username }}</small>
                                         </div>
                                         <div class="stats-info">
-                                            <small><i class="far fa-eye"></i> 12,345</small>
-                                            <small><i class="far fa-comment"></i> 123</small>
+                                            <small><i class="far fa-comment"></i> {{ noticia.comentarios.count|default:"0" }}</small>
                                         </div>
                                     </div>
                                 </div>

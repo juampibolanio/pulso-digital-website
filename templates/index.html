@@ -28,7 +28,6 @@
                         </div>
                         <a class="h2 m-0 text-white text-uppercase font-weight-bold" href="{% url 'apps.noticias:detalle_noticia' noticia_principal.noticia_id %}">{{ noticia_principal.titulo|truncatechars:80 }}</a>
                         
-                        <!-- Contador de comentarios en noticia principal -->
                         <div class="mt-2">
                             <span class="text-white">
                                 <i class="far fa-comment ml-3 mr-1"></i>{{ noticia_principal.comentarios.count|default:"0" }}
@@ -52,9 +51,9 @@
                     <div class="overlay">
                         <div class="mb-2">
                             {% for categoria in noticia.categorias.all %}
-                            <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2 mb-1" href="">{{ categoria.nombre }}</a>
+                            <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2 mb-1" href="{% url 'apps.noticias:detalle_noticia' noticia.noticia_id %}">{{ categoria.nombre }}</a>
                             {% endfor %}
-                            <a class="text-white" href=""><small>{{ noticia.fecha|date:"M d, Y" }}</small></a>
+                            <a class="text-white" href="{% url 'apps.noticias:detalle_noticia' noticia.noticia_id %}"><small>{{ noticia.fecha|date:"M d, Y" }}</small></a>
                         </div>
                         <a class="h6 m-0 text-white text-uppercase font-weight-semi-bold" href="{% url 'apps.noticias:detalle_noticia' noticia.noticia_id %}">{{ noticia.titulo|truncatechars:40 }}</a>
                         
@@ -72,7 +71,6 @@
 </div>
 
 </div>
-
 
 <!-- Main News Slider End -->
 
@@ -100,10 +98,7 @@
     </div>
 </div>
 
-
 <!-- Breaking News End -->
-
-
 
 <!-- Featured News Slider Start -->
 <div class="container-fluid pt-5 mb-3 noticia-card-especial">
@@ -140,7 +135,6 @@
 </div>
 
 <!-- Featured News Slider End -->
-
 
 <!-- News With Sidebar Start -->
 <div class="container-fluid">
@@ -194,10 +188,15 @@
                             <div class="card-footer">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="author-info">
-                                        <img class="author-avatar" src="{% static 'img/user-default.png' %}"
-                                            alt="{{ noticia.autor.username }}">
+                                        {% if noticia.autor.imagen_perfil %}
+                                            <img src="{{ noticia.autor.imagen_perfil.url }}" alt="{{ noticia.autor.username }}"
+                                                    class="img-fluid " style="width: 35px; height: 35px; border-radius: 50%; object-fit: cover;">
+                                            {% else %}
+                                                <img src="{% static 'img/user-default.png' %}" alt="Avatar por defecto" class=""
+                                                    style="width: 35px; height: 35px; border-radius: 50%; object-fit: cover;">
+                                            {% endif %}
                                         <small class="font-weight-medium">
-                                            <i class="fas fa-user mr-1"></i>{{ noticia.autor.username }}
+                                            {{ noticia.autor.get_full_name|default:noticia.autor.username }}
                                         </small>
                                     </div>
                                     <div class="stats-info">
@@ -211,7 +210,7 @@
                     </div>
                     {% endfor %}
 
-                    <!-- Paginación estilizada -->
+                    <!-- Paginación  -->
                     <div class="col-12">
                         <div class="custom-pagination">
                             <div class="pagination-content">
