@@ -63,4 +63,4 @@ def editar_comentario(request, comentario_id):
 def eliminar_comentario(request, comentario_id):
     comentario = Comentario.objects.get(id=comentario_id, usuario=request.user)
     comentario.delete()
-    return JsonResponse[{"success": True}]
+    return JsonResponse({"success": True})
