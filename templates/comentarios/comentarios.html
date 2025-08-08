@@ -1,4 +1,7 @@
 {% load static %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/comentarios.css' %}">
+{% endblock %}
 
 <div class="mb-3">
     <div class="section-title mb-0">
@@ -13,32 +16,38 @@
     <div class="bg-white border border-top-0 p-4">
         {% if comentarios %}
         {% for comentario in comentarios %}
-        <div class="media {% if not forloop.last %}mb-4{% endif %}">
-            
-            {% if comentario.usuario.imagen_perfil %}
-            <img src="{{ comentario.usuario.imagen_perfil.url }}" alt="{{ comentario.usuario.username }}"
-                class="img-fluid mr-3 mt-1" style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover;">
-            {% else %}
-            
-            <img src="{% static 'img/user-default.png' %}" alt="Avatar por defecto" class="mr-3 mt-1"
-                style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover;">
-            {% endif %}
-            <div class="media-body">
-                <h6>
-                    <a class="text-secondary font-weight-bold" href="#">{{ comentario.getName }}</a>
-                    <small><i>{{ comentario.fecha|date:"d M Y" }}</i></small>
-                </h6>
-            </div>
-        </div>
-        <div id="comentario-{{ comentario.id }}">
-            <p id="comentario-texto-{{ comentario.id }}">{{ comentario.contenido }}</p>
+<div class="comentario" id="comentario-{{ comentario.id }}">
+    {% if comentario.usuario.imagen_perfil %}
+    <img src="{{ comentario.usuario.imagen_perfil.url }}" alt="{{ comentario.usuario.username }}"
+        class="comentario-avatar">
+    {% else %}
+    <img src="{% static 'img/user-default.png' %}" alt="Avatar por defecto" class="comentario-avatar">
+    {% endif %}
 
-            {% if request.user == comentario.usuario %}
-            <button onclick="editarComentario({{ comentario.id }})">Editar</button>
-            <button onclick="eliminarComentario({{ comentario.id }})">Eliminar</button>
-            {% endif %}
+    <div class="comentario-contenido">
+        <h6>
+            <a class="text-secondary font-weight-bold" href="#">
+                {{ comentario.usuario.get_full_name|default:comentario.usuario.username }}
+            </a>
+            <small><i>{{ comentario.fecha|date:"d M Y" }}</i></small>
+        </h6>
+
+        <p id="comentario-texto-{{ comentario.id }}">{{ comentario.contenido }}</p>
+
+        {% if request.user == comentario.usuario %}
+        <div class="comment-actions">
+            <button class="btn-comment-action btn-edit" onclick="editarComentario({{ comentario.id }})">
+                <i class="fas fa-edit"></i> Editar
+            </button>
+            <button class="btn-comment-action btn-delete" onclick="eliminarComentario({{ comentario.id }})">
+                <i class="fas fa-trash"></i> Eliminar
+            </button>
         </div>
-        {% endfor %}
+        {% endif %}
+    </div>
+</div>
+{% endfor %}
+
         {% else %}
         <p class="text-muted">No hay comentarios aún. ¡Sé el primero en comentar!</p>
         {% endif %}
@@ -73,7 +82,7 @@
                 {{ form.contenido }}
             </div>
             <div class="form-group mb-0">
-                <input type="submit" value="Comentar"
+                <input style="color: white;"  type="submit" value="Comentar"
                     class="btn btn-primary font-weight-semi-bold py-2 px-3">
             </div>
         </form>
@@ -90,62 +99,224 @@
     </div>
 </div>
 
+<!-- Modal para editar comentario -->
+<div class="modal fade" id="editarComentarioModal" tabindex="-1" role="dialog" aria-labelledby="editarComentarioModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 style="color: white;"  class="modal-title" id="editarComentarioModalLabel">
+                    <i class="fas fa-edit"></i>  Editar Comentario
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="textoEditarComentario">Mensaje:</label>
+                    <textarea class="form-control" id="textoEditarComentario" rows="4" placeholder="Escribe tu comentario..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <i class="fas fa-times"></i>  Cancelar
+                </button>
+                <button style="color: white;" type="button" class="btn btn-primary" id="confirmarEditarComentario">
+                    <i class="fas fa-save"></i>  Guardar Cambios
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para eliminar comentario -->
+<div class="modal fade" id="eliminarComentarioModal" tabindex="-1" role="dialog" aria-labelledby="eliminarComentarioModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 style="color: white;" class="modal-title" id="eliminarComentarioModalLabel">
+                    <i class="fas fa-exclamation-triangle"></i> Eliminar Comentario
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-3">¿Estás seguro que deseas eliminar este comentario?</p>
+                <div class="alert alert-warning">
+                    <small><i class="fas fa-info-circle"></i> Esta acción no se puede deshacer.</small>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <i class="fas fa-times"></i> Cancelar
+                </button>
+                <button type="button" class="btn btn-danger" id="confirmarEliminarComentario">
+                    <i class="fas fa-trash"></i> Eliminar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast para notificaciones -->
+<div class="toast-container">
+    <div class="toast" id="notificationToast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="mr-auto toast-title">Notificación</strong>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body">
+            
+        </div>
+    </div>
+</div>
+
+
 <script>
-    //Función para editar comentario 
-    function editarComentario(comentarioId) {
-        const nuevoTexto = prompt("Edita tu comentario"); //Se abre Prompt para editar
-        if (!nuevoTexto)return; //Si se deja vacío no hace nada
+let comentarioIdActual = null;
 
-            //Envía una solicitud POST para editar
-        fetch(`/comentarios/editar/${comentarioId}/`, {
-            method: 'POST',
-            headers: {
-                "X-CSRFToken": getCookie("csrftoken"), //Token para que django acepte la petición
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-            body: `contenido=${encodeURIComponent(nuevoTexto)}` //Envía el contenido codificado
-        })
-        .then(res => res.json()) // Interpreta la respuesta como JSON
-        .then(data => {
-            if (data.success) {
-                document.querySelector(`#comentario-texto-${comentarioId}`).innerText = data.contenido;
-            } else {
-                alert("Error al editar");
-            }
-        });
+// Función para mostrar toast de notificación
+function mostrarToast(mensaje, tipo = 'success') {
+    const toast = document.getElementById('notificationToast');
+    const toastBody = toast.querySelector('.toast-body');
+    const toastTitle = toast.querySelector('.toast-title');
+    
+    // Configurar contenido
+    toastBody.textContent = mensaje;
+    
+    // Configurar estilos según el tipo
+    toast.className = 'toast ' + tipo;
+    
+    if (tipo === 'success') {
+        toastTitle.innerHTML = '<i class="fas fa-check-circle"></i> Éxito';
+    } else if (tipo === 'error') {
+        toastTitle.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error';
     }
-    // Funcion para eliminar comentario
-    function eliminarComentario(comentarioId) {
-        if (!confirm ("¿Estas seguro que quieres eliminar este comentario?")) return;
-        // se hace una solicitud metodo POST
-        fetch(`/comentarios/eliminar/${comentarioId}/`, {
-            method: "POST",
-            headers: {
-                "X-CSRFToken": getCookie("csrftoken"),
-            }
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                document.querySelector(`#comentario-${comentarioId}`).remove();
-            } else {
-                alert("Error al eliminar");
-            }
-        });
-    }
+    
+    // Mostrar el toast
+    $('.toast').toast('show');
+}
 
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let cookie of cookies) {
-                cookie = cookie.trim();
-                if (cookie.startsWith(name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
+// Función para editar comentario 
+function editarComentario(comentarioId) {
+    comentarioIdActual = comentarioId;
+    
+    // Obtener el texto actual del comentario
+    const textoActual = document.querySelector(`#comentario-texto-${comentarioId}`).textContent;
+    
+    // Llenar el modal con el texto actual
+    document.getElementById('textoEditarComentario').value = textoActual;
+    
+    // Mostrar el modal
+    $('#editarComentarioModal').modal('show');
+}
+
+// Confirmar edición
+document.getElementById('confirmarEditarComentario').addEventListener('click', function() {
+    const nuevoTexto = document.getElementById('textoEditarComentario').value.trim();
+    
+    if (!nuevoTexto) {
+        mostrarToast('El comentario no puede estar vacío', 'error');
+        return;
+    }
+    
+    // Deshabilitar el botón mientras se procesa
+    this.disabled = true;
+    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
+    
+    // Enviar solicitud
+    fetch(`/comentarios/editar/${comentarioIdActual}/`, {
+        method: 'POST',
+        headers: {
+            "X-CSRFToken": getCookie("csrftoken"),
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: `contenido=${encodeURIComponent(nuevoTexto)}`
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            document.querySelector(`#comentario-texto-${comentarioIdActual}`).textContent = data.contenido;
+            $('#editarComentarioModal').modal('hide');
+            mostrarToast('Comentario editado exitosamente', 'success');
+        } else {
+            mostrarToast('Error al editar el comentario', 'error');
+        }
+    })
+    .catch(error => {
+        mostrarToast('Error de conexión', 'error');
+    })
+    .finally(() => {
+        // Rehabilitar el botón
+        this.disabled = false;
+        this.innerHTML = '<i class="fas fa-save"></i> Guardar Cambios';
+    });
+});
+
+// Función para eliminar comentario
+function eliminarComentario(comentarioId) {
+    comentarioIdActual = comentarioId;
+    $('#eliminarComentarioModal').modal('show');
+}
+
+// Confirmar eliminación
+document.getElementById('confirmarEliminarComentario').addEventListener('click', function() {
+    // Deshabilitar el botón mientras se procesa
+    this.disabled = true;
+    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Eliminando...';
+    
+    fetch(`/comentarios/eliminar/${comentarioIdActual}/`, {
+        method: "POST",
+        headers: {
+            "X-CSRFToken": getCookie("csrftoken"),
+        }
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            document.querySelector(`#comentario-${comentarioIdActual}`).remove();
+            $('#eliminarComentarioModal').modal('hide');
+            mostrarToast('Comentario eliminado exitosamente', 'success');
+        } else {
+            mostrarToast('Error al eliminar el comentario', 'error');
+        }
+    })
+    .catch(error => {
+        mostrarToast('Error de conexión', 'error');
+    })
+    .finally(() => {
+        // Rehabilitar el botón
+        this.disabled = false;
+        this.innerHTML = '<i class="fas fa-trash"></i> Eliminar';
+    });
+});
+
+// Función para obtener el token CSRF
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+            cookie = cookie.trim();
+            if (cookie.startsWith(name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
             }
         }
-        return cookieValue;
     }
+    return cookieValue;
+}
+
+// Limpiar el modal cuando se cierra
+$('#editarComentarioModal').on('hidden.bs.modal', function () {
+    document.getElementById('textoEditarComentario').value = '';
+    comentarioIdActual = null;
+});
+
+$('#eliminarComentarioModal').on('hidden.bs.modal', function () {
+    comentarioIdActual = null;
+});
 </script>
