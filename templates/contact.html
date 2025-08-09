@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+<div class="container-fluid mt-5 pt-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="section-title mb-0">
+                        <h4 class="m-0 text-uppercase font-weight-bold">Contactanos</h4>
+                    </div>
+                    <div class="bg-white border border-top-0 p-4 mb-3">
+                        <div class="mb-4">
+                            <h6 class="text-uppercase font-weight-bold">INFORMACIÓN DE CONTACTO</h6>
+                            <p class="mb-4">¡Completá el formulario y te responderemos a la brevedad! Estamos para ayudarte con cualquier duda, sugerencia o consulta que tengas.</a>.</p>
+							<div class="mb-3">
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fa fa-map-marker-alt text-primary mr-2"></i>
+                                    <h6 class="font-weight-bold mb-0">Nuestra oficina</h6>
+                                </div>
+                                <p class="m-0">Avenida 9 de Julio 1755 (Resistencia)</p>
+                            </div>
+                            <div class="mb-3">
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fa fa-envelope-open text-primary mr-2"></i>
+                                    <h6 class="font-weight-bold mb-0">Nuestro Email</h6>
+                                </div>
+                                <p class="m-0">pulso_digital@gmail.com</p>
+                            </div>
+                            <div class="mb-3">
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fa fa-phone-alt text-primary mr-2"></i>
+                                    <h6 class="font-weight-bold mb-0">Nuestro teléfono</h6>
+                                </div>
+                                <p class="m-0">3624896854</p>
+                            </div>
+                        </div>
+                        <h6 class="text-uppercase font-weight-bold mb-3">Envianos un  mensaje</h6>
+                        <form method="post" action="{% url 'apps.noticias:contacto' %}">
+    {% csrf_token %}
+
+    <div class="form-row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <input type="text" name="nombre" class="form-control p-4" placeholder="Nombre" required>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <input type="email" name="email" class="form-control p-4" placeholder="Email" required>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <input type="text" name="asunto" class="form-control p-4" placeholder="Asunto" required>
+    </div>
+
+    <div class="form-group">
+        <textarea name="mensaje" class="form-control" rows="4" placeholder="Mensaje" required></textarea>
+    </div>
+
+    <button class="btn btn-primary font-weight-semi-bold px-4" style="height: 50px;" type="submit">Enviar mensaje</button>
+</form>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+
+                    {% include "componentes/redes_sociales.html" %}
+
+                    <div class="mb-3">
+                        <div class="section-title mb-0">
+                            <h4 class="m-0 text-uppercase font-weight-bold">INFORMACIÓN</h4>
+                        </div>
+                        <div class="bg-white text-center border border-top-0 p-3">
+                            <p>Deja tu email para recibir emails diarios con las noticias más actualizadas</p>
+                            <div class="input-group mb-2" style="width: 100%;">
+                                <input type="text" class="form-control form-control-lg" placeholder="Tu Email">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary font-weight-bold px-3">Subscribirse</button>
+                                </div>
+                            </div>
+                            <small>Las mejores noticias</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
+{% endblock %}
