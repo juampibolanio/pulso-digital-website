@@ -1,26 +1,31 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <title>NOTICIAS | CREAR</title>
-</head>
-<body>
-    <div class="container"></div>
-        <h1>CREAR NOTICIA</h1>
-            <form method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                {{ form.as_p }}
-        
-                <label for="imagenes">Subir imágenes:</label>
-                <p>Elija todas las imágenes que desea subir</p>
-                <input type="file" name="imagenes" multiple required>
-                <br>
+{% extends 'base.html' %} 
+{% load static %}    
 
-            <button type="submit">Crear Noticia</button>
-            </form>
-    </div>
-</body>
-</html>
+{% block extra_css %}     
+<link rel="stylesheet" href="{% static 'css/noticias.css' %}"> 
+{% endblock %}  
+
+{% block contenido %} 
+<div class="container crear-noticia">
+    <h1>CREAR NOTICIA</h1>             
+    <form method="POST" enctype="multipart/form-data">                 
+        {% csrf_token %}                 
+        
+        <!-- Campos del formulario Django -->
+        {{ form.as_p }}                          
+        
+        <!-- Campo de imágenes personalizado -->
+        <div class="form-group">
+            <label for="imagenes">Subir imágenes:</label>                 
+            <input type="file" name="imagenes" multiple required accept="image/*">
+            <div class="file-description">
+                Elija todas las imágenes que desea subir (formatos: JPG, PNG, GIF)
+            </div>
+        </div>
+        
+        <button type="submit">
+            <span>Crear Noticia</span>
+        </button>             
+    </form>     
+</div> 
+{% endblock %}
