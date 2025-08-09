@@ -1,37 +1,37 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <title>NOTICIAS | EDITAR</title>
 </head>
 
 <body>
-    <h1>EDITAR NOTICIA</h1>
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
+    <div class="container">
+        <h1>EDITAR NOTICIA</h1>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
 
-        <h3>Imágenes actuales:</h3>
-        <ul>
-            {% for imagen in noticia.imagenes.all %}
-            <li>
-                <img src="{{ imagen.imagen.url }}" width="100px">
-                <label>
-                    <input type="checkbox" name="eliminar_imagenes" value="{{ imagen.id }}">
-                    Eliminar
-                </label>
-            </li>
-            {% endfor %}
-        </ul>
+                <label>Imágenes actuales:</label>
+                <ul>
+                    {% for imagen in noticia.imagenes.all %}
+                    <li>
+                        <img src="{{ imagen.imagen.url }}" width="100px">
+                        <label>
+                            <input type="checkbox" name="eliminar_imagenes" value="{{ imagen.id }}">
+                            Eliminar
+                        </label>
+                    </li>
+                        {% endfor %}
+                </ul>
+                    <label for="imagenes">Agregar imágenes nuevas:</label>
+                    <input type="file" name="imagenes" multiple>
 
-        <label for="imagenes">Agregar imágenes nuevas:</label>
-        <input type="file" name="imagenes" multiple>
-
-
-        <button type="submit">Guardar Cambios</button>
-    </form>
+                    <button type="submit">Guardar Cambios</button>
+            </form>
+    </div>
 </body>
-
 </html>
