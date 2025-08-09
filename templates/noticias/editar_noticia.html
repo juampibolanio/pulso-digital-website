@@ -1,15 +1,12 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <title>NOTICIAS | EDITAR</title>
-</head>
 
-<body>
-    <div class="container">
+{% block extra_css %}     
+<link rel="stylesheet" href="{% static 'css/noticias.css' %}"> 
+{% endblock %} 
+
+{% block contenido %}
+    <div class="container editar-noticia">
         <h1>EDITAR NOTICIA</h1>
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -27,11 +24,12 @@
                     </li>
                         {% endfor %}
                 </ul>
+                    <label>Si desea eliminar imágenes, marque eliminar al lado de cada imagen, al guardar los cambios se eliminarán.</label>
+                    <br>
                     <label for="imagenes">Agregar imágenes nuevas:</label>
                     <input type="file" name="imagenes" multiple>
 
                     <button type="submit">Guardar Cambios</button>
             </form>
     </div>
-</body>
-</html>
+{% endblock %}
