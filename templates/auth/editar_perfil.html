@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Editar Perfil - Pulso Digital</title>
+    <link rel="stylesheet" href="{% static 'css/registro_estilos.css' %}">
+</head>
+
+<body>
+    <div class="left-section"></div>
+
+    <div class="right-section">
+        <div class="register-container">
+
+            <div class="Pulso-titulo">
+                <h1>
+                    <span class="pulso">PULSO</span> <span class="digital">DIGITAL</span>
+                </h1>
+            </div>
+
+            <h2>Editar Perfil</h2>
+            <div class="section-title">
+                <div class="line"></div>
+                <h2 style="text-align:center;">Actualiza tus datos</h2>
+                <div class="line"></div>
+            </div>
+
+            {% if messages %}
+            <div class="error-messages">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="form-group2">
+                    <input type="text" name="first_name" placeholder="Nombre" value="{{ form.first_name.value|default_if_none:'' }}">
+                    {% if form.first_name.errors %}
+                        <div class="error-messages">
+                            {% for error in form.first_name.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group2">
+                    <input type="text" name="last_name" placeholder="Apellido" value="{{ form.last_name.value|default_if_none:'' }}">
+                    {% if form.last_name.errors %}
+                        <div class="error-messages">
+                            {% for error in form.last_name.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group2">
+                    <input type="text" name="username" placeholder="Nombre de usuario" value="{{ form.username.value|default_if_none:'' }}">
+                    {% if form.username.errors %}
+                        <div class="error-messages">
+                            {% for error in form.username.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group2">
+                    <input type="email" name="email" placeholder="Correo electrónico" value="{{ form.email.value|default_if_none:'' }}">
+                    {% if form.email.errors %}
+                        <div class="error-messages">
+                            {% for error in form.email.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group2">
+                    <input type="file" id="imagen_perfil" name="imagen_perfil" accept="image/*" style="display:none;">
+                    <button type="button" onclick="document.getElementById('imagen_perfil').click()" class="upload-btn">
+                        Cambiar imagen de perfil
+                    </button>
+                </div>
+
+                <button type="submit" class="register-btn">Guardar cambios</button>
+            </form>
+
+        </div>
+    </div>
+</body>
+
+</html>

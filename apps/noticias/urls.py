@@ -7,10 +7,10 @@ from .views import (
     crear_noticia,
     editar_noticia,
     eliminar_noticia,
-    categorias,
-    categoria,  
+    categoria, 
     nosotros,   
-    contacto    
+    contacto,    
+    terminos_condiciones
 )
 
 urlpatterns = [
@@ -30,5 +30,8 @@ urlpatterns = [
 
     path('editar/<int:noticia_id>/', editar_noticia, name ="editar_noticia"), # Editar una noticia
     
-    path('eliminar/<int:noticia_id>/', eliminar_noticia, name ="eliminar_noticia"), # Eliminar una noticia
+    path('eliminar/<int:noticia_id>/', eliminar_noticia, name ="eliminar_noticia"), #Eliminar una noticia
+
+    path('terminos/', terminos_condiciones, name='terminos_condiciones'),
+    
 ]

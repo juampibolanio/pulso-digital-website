@@ -126,4 +126,3 @@ MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'media')
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

@@ -1,0 +1,50 @@
+.terminos-container {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 1.5rem 2rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgb(0 0 0 / 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.terminos-container h1 {
+    text-align: center;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    color: #2c3e50;
+}
+
+.terminos-container h2 {
+    margin-top: 1.5rem;
+    color: #34495e;
+}
+
+.terminos-container p {
+    margin: 0.75rem 0;
+}
+
+.terminos-container ul {
+    list-style-type: disc;
+    margin-left: 1.5rem;
+}
+
+.terminos-container::-webkit-scrollbar {
+    width: 8px;
+}
+.terminos-container::-webkit-scrollbar-thumb {
+    background-color: #2980b9;
+    border-radius: 4px;
+}
+
+
+@media (max-width: 600px) {
+    .terminos-container {
+    padding: 1rem;
+    max-height: 70vh;
+}
+}
