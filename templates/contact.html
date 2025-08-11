@@ -1,123 +1,90 @@
 {% extends 'base.html' %}
 
 {% block contenido %}
-<!-- Contact Start -->
 <div class="container-fluid mt-5 pt-3">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8">
                     <div class="section-title mb-0">
-                        <h4 class="m-0 text-uppercase font-weight-bold">Consultas</h4>
+                        <h4 class="m-0 text-uppercase font-weight-bold">Contactanos</h4>
                     </div>
                     <div class="bg-white border border-top-0 p-4 mb-3">
                         <div class="mb-4">
-                            <h6 class="text-uppercase font-weight-bold">Información de contacto</h6>
-                            <p class="mb-4">El formulario de contacto está inactivo actualmente. Obtén un formulario de contacto funcional con Ajax y PHP en minutos. Solo copia y pega los archivos, añade un poco de código y listo. <a href="https://htmlcodex.com/contact-form">Download Now</a>.</p>
+                            <h6 class="text-uppercase font-weight-bold">INFORMACIÓN DE CONTACTO</h6>
+                            <p class="mb-4">¡Completá el formulario y te responderemos a la brevedad! Estamos para ayudarte con cualquier duda, sugerencia o consulta que tengas.</a>.</p>
 							<div class="mb-3">
                                 <div class="d-flex align-items-center mb-2">
                                     <i class="fa fa-map-marker-alt text-primary mr-2"></i>
-                                    <h6 class="font-weight-bold mb-0">Nuestras oficinas</h6>
+                                    <h6 class="font-weight-bold mb-0">Nuestra oficina</h6>
                                 </div>
-                                <p class="m-0">123 Street, New York, USA</p>
+                                <p class="m-0">Avenida 9 de Julio 1755 (Resistencia)</p>
                             </div>
                             <div class="mb-3">
                                 <div class="d-flex align-items-center mb-2">
                                     <i class="fa fa-envelope-open text-primary mr-2"></i>
-                                    <h6 class="font-weight-bold mb-0">Mandanos un Email</h6>
+                                    <h6 class="font-weight-bold mb-0">Nuestro Email</h6>
                                 </div>
-                                <p class="m-0">info@example.com</p>
+                                <p class="m-0">pulso_digital@gmail.com</p>
                             </div>
                             <div class="mb-3">
                                 <div class="d-flex align-items-center mb-2">
                                     <i class="fa fa-phone-alt text-primary mr-2"></i>
-                                    <h6 class="font-weight-bold mb-0">Llamanos</h6>
+                                    <h6 class="font-weight-bold mb-0">Nuestro teléfono</h6>
                                 </div>
-                                <p class="m-0">+012 345 6789</p>
+                                <p class="m-0">3624896854</p>
                             </div>
                         </div>
-                        <h6 class="text-uppercase font-weight-bold mb-3">Contactarnos</h6>
-                        <form>
-                            <div class="form-row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control p-4" placeholder="Your Name" required="required"/>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <input type="email" class="form-control p-4" placeholder="Your Email" required="required"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" class="form-control p-4" placeholder="Subject" required="required"/>
-                            </div>
-                            <div class="form-group">
-                                <textarea class="form-control" rows="4" placeholder="Message" required="required"></textarea>
-                            </div>
-                            <div>
-                                <button class="btn btn-primary font-weight-semi-bold px-4" style="height: 50px;"
-                                    type="submit">Enviar mensaje</button>
-                            </div>
-                        </form>
+                        <h6 class="text-uppercase font-weight-bold mb-3">Envianos un  mensaje</h6>
+                        <form method="post" action="{% url 'apps.noticias:contacto' %}">
+    {% csrf_token %}
+
+    <div class="form-row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <input type="text" name="nombre" class="form-control p-4" placeholder="Nombre" required>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <input type="email" name="email" class="form-control p-4" placeholder="Email" required>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <input type="text" name="asunto" class="form-control p-4" placeholder="Asunto" required>
+    </div>
+
+    <div class="form-group">
+        <textarea name="mensaje" class="form-control" rows="4" placeholder="Mensaje" required></textarea>
+    </div>
+
+    <button class="btn btn-primary font-weight-semi-bold px-4" style="height: 50px;" type="submit">Enviar mensaje</button>
+</form>
                     </div>
                 </div>
                 <div class="col-lg-4">
-                    <!-- Social Follow Start -->
-                    <div class="mb-3">
-                        <div class="section-title mb-0">
-                            <h4 class="m-0 text-uppercase font-weight-bold">Seguinos</h4>
-                        </div>
-                        <div class="bg-white border border-top-0 p-3">
-                            <a href="" class="d-block w-100 text-white text-decoration-none mb-3" style="background: #39569E;">
-                                <i class="fab fa-facebook-f text-center py-4 mr-3" style="width: 65px; background: rgba(0, 0, 0, .2);"></i>
-                                <span class="font-weight-medium">12,345 Fans</span>
-                            </a>
-                            <a href="" class="d-block w-100 text-white text-decoration-none mb-3" style="background: #52AAF4;">
-                                <i class="fab fa-twitter text-center py-4 mr-3" style="width: 65px; background: rgba(0, 0, 0, .2);"></i>
-                                <span class="font-weight-medium">12,345 Seguidores</span>
-                            </a>
-                            <a href="" class="d-block w-100 text-white text-decoration-none mb-3" style="background: #0185AE;">
-                                <i class="fab fa-linkedin-in text-center py-4 mr-3" style="width: 65px; background: rgba(0, 0, 0, .2);"></i>
-                                <span class="font-weight-medium">12,345 Connects</span>
-                            </a>
-                            <a href="" class="d-block w-100 text-white text-decoration-none mb-3" style="background: #C8359D;">
-                                <i class="fab fa-instagram text-center py-4 mr-3" style="width: 65px; background: rgba(0, 0, 0, .2);"></i>
-                                <span class="font-weight-medium">12,345 Seguidores</span>
-                            </a>
-                            <a href="" class="d-block w-100 text-white text-decoration-none mb-3" style="background: #DC472E;">
-                                <i class="fab fa-youtube text-center py-4 mr-3" style="width: 65px; background: rgba(0, 0, 0, .2);"></i>
-                                <span class="font-weight-medium">12,345 Suscriptores</span>
-                            </a>
-                            <a href="" class="d-block w-100 text-white text-decoration-none" style="background: #055570;">
-                                <i class="fab fa-vimeo-v text-center py-4 mr-3" style="width: 65px; background: rgba(0, 0, 0, .2);"></i>
-                                <span class="font-weight-medium">12,345 Seguidores</span>
-                            </a>
-                        </div>
-                    </div>
-                    <!-- Social Follow End -->
 
-                    <!-- Newsletter Start -->
+                    {% include "componentes/redes_sociales.html" %}
+
                     <div class="mb-3">
                         <div class="section-title mb-0">
-                            <h4 class="m-0 text-uppercase font-weight-bold">Suscripción</h4>
+                            <h4 class="m-0 text-uppercase font-weight-bold">INFORMACIÓN</h4>
                         </div>
                         <div class="bg-white text-center border border-top-0 p-3">
-                            <p>Aliqu justo et labore at eirmod justo sea erat diam dolor diam vero kasd</p>
+                            <p>Deja tu email para recibir emails diarios con las noticias más actualizadas</p>
                             <div class="input-group mb-2" style="width: 100%;">
-                                <input type="text" class="form-control form-control-lg" placeholder="Your Email">
+                                <input type="text" class="form-control form-control-lg" placeholder="Tu Email">
                                 <div class="input-group-append">
-                                    <button class="btn btn-primary font-weight-bold px-3">Iniciar sesión</button>
+                                    <button class="btn btn-primary font-weight-bold px-3">Subscribirse</button>
                                 </div>
                             </div>
-                            <small>Lorem ipsum dolor sit amet elit</small>
+                            <small>Las mejores noticias</small>
                         </div>
                     </div>
-                    <!-- Newsletter End -->
                 </div>
             </div>
         </div>
 </div>
-<!-- Contact End -->
 
 {% endblock %}
