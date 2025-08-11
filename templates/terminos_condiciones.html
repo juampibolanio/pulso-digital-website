@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Términos y Condiciones - Pulso Digital{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/terminos_estilos.css' %}">
+{% endblock %}
+
+{% block contenido %}
+<section class="terminos-section container my-5 px-4 py-4 bg-white rounded shadow-sm">
+    <h1 class="mb-4 text-primary">Términos y Condiciones</h1>
+
+    <p>Bienvenido a <strong>Pulso Digital</strong>. Al utilizar nuestro sitio web, aceptas cumplir y estar sujeto a los siguientes términos y condiciones:</p>
+
+    <h2 class="mt-4">1. Uso del sitio</h2>
+    <p>El contenido de esta página es solo para fines informativos generales y está sujeto a cambios sin previo aviso.</p>
+
+    <h2 class="mt-4">2. Propiedad intelectual</h2>
+    <p>Todo el contenido, incluyendo textos, imágenes y logotipos, son propiedad de Pulso Digital o sus licenciantes y están protegidos por las leyes de propiedad intelectual.</p>
+
+    <h2 class="mt-4">3. Responsabilidades del usuario</h2>
+    <ul>
+        <li>Proporcionar información veraz y actualizada al registrarse.</li>
+        <li>No utilizar el sitio para fines ilegales o prohibidos.</li>
+        <li>No intentar acceder sin autorización a partes del sitio.</li>
+    </ul>
+
+    <h2 class="mt-4">4. Privacidad</h2>
+    <p>Respetamos tu privacidad y manejamos tus datos conforme a nuestra política de privacidad.</p>
+
+    <h2 class="mt-4">5. Cambios en los términos</h2>
+    <p>Nos reservamos el derecho a modificar estos términos en cualquier momento. Te recomendamos revisarlos periódicamente.</p>
+
+    <h2 class="mt-4">6. Contacto</h2>
+    <p>Para consultas sobre estos términos, podés contactarnos a través de nuestro <a href="{% url 'apps.noticias:contacto' %}" class="text-primary">formulario de contacto</a>.</p>
+</section>
+{% endblock %}
