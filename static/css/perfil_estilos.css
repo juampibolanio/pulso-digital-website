@@ -184,7 +184,7 @@ body {
     text-decoration: underline;
 }
 
-.upload-btn {
+.form-group2 input {
     padding: 10px 20px;
     background-color: #0284C7;
     color: white;
@@ -194,6 +194,6 @@ body {
     font-weight: bold;
 }
 
-.upload-btn:hover {
+.form-group2:hover input {
     background-color: #0369a1;
 }

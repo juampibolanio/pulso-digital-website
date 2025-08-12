@@ -65,7 +65,6 @@ def editar_perfil(request, id):
         form = PerfilForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Perfil actualizado correctamente.')
             return redirect('inicio') 
     else:
         form = PerfilForm(instance=user)
