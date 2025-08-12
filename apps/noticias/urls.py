@@ -13,6 +13,7 @@ from .views import (
     contacto,
     terminos_condiciones    
 )
+from apps.noticias import views
 
 urlpatterns = [
     path('', noticias, name="todas_las_noticias"), # Muestra todas las noticias
@@ -34,4 +35,6 @@ urlpatterns = [
     path('eliminar/<int:noticia_id>/', eliminar_noticia, name ="eliminar_noticia"), # Eliminar una noticia
     
     path('terminos/', terminos_condiciones, name='terminos_condiciones'),
+
+    path('panel-redactor/', views.panel_redactor, name='panel_redactor'),
 ]

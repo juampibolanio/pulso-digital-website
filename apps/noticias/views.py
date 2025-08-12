@@ -9,6 +9,7 @@ from django.shortcuts import redirect
 from django.utils import timezone
 from django.contrib.auth.decorators import permission_required
 from datetime import timedelta
+from django.contrib.auth.decorators import login_required, user_passes_test
 
 #Listar todas las categorías
 def categorias():
@@ -142,7 +143,7 @@ def crear_noticia(request):
 
             return redirect('apps.noticias:todas_las_noticias')  
     else:
-        form = NoticiaForm()
+        form = NoticiaForm(initial={'autor': request.user})
 
     context = {
         "form": form
@@ -229,7 +230,7 @@ def inicio(request):
         'ultimas_noticias': ultimas_noticias,
         'noticias_trending': noticias_trending,
         'noticias_ultima_hora': noticias_ultima_hora,
-        'todas_las_categorias' : todas_las_categorias
+        'todas_las_categorias' : todas_las_categorias,
     }
     
     return render(request, 'index.html', context)
@@ -259,3 +260,17 @@ def tendencias(request):
 #Visualizar la vista terminos y condiciones
 def terminos_condiciones(request):
     return render(request, 'terminos_condiciones.html')
+
+def es_redactor(user):
+    return user.groups.filter(name='redactor').exists()
+
+@login_required
+@user_passes_test(es_redactor)
+def panel_redactor(request):
+    # Obtenemos las noticias que creó el usuario q tiene el rol de redactor
+    noticias_usuario = Noticia.objects.filter(autor=request.user).order_by('-fecha')
+
+    context = {
+        'noticias_usuario': noticias_usuario
+    }
+    return render(request, 'noticias/panel_redactor.html', context)
