@@ -250,3 +250,8 @@ def tendencias(request):
     }
 
     return render(request, 'componentes/tendencias.html', context)
+
+
+#Visualizar la vista terminos y condiciones
+def terminos_condiciones(request):
+    return render(request, 'terminos_condiciones.html')
