@@ -1,8 +1,33 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Sobre Nosotros - Pulso Digital{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/nosotros.css' %}">
+{% endblock %}
 
 {% block contenido %}
-    <div class="container mt-4">
-        <h1>Sobre Nosotros</h1>
-        <p>Este es el contenido de la sección "Nosotros".</p>
-    </div>
+<section class="terminos-section container my-5 px-4 py-4 bg-white rounded shadow-sm">
+    <h1 class="mb-4 text-primary">Sobre Pulso Digital</h1>
+
+    <p><strong>Pulso Digital</strong> es un portal web desarrollado como proyecto final de la etapa dos del <em>Informatorio 2025</em>, organizado por la Subsecretaría de Empleo Chaco.</p>
+
+    <p>Este sitio está dedicado exclusivamente a la divulgación de noticias, avances y novedades en el fascinante mundo de la <strong>robótica</strong>. Nuestro objetivo es ofrecer un espacio claro, ordenado y funcional para que los usuarios puedan informarse, explorar y participar activamente comentando las publicaciones.</p>
+
+    <h2 class="mt-4">Objetivo del proyecto</h2>
+    <p>Este portal surge como un desafío para aplicar conocimientos técnicos adquiridos durante el curso, incluyendo diseño y programación web, manejo de bases de datos y seguridad. La intención es entregar una solución real que aporte valor y facilite la difusión de información tecnológica en la comunidad.</p>
+
+    <h2 class="mt-4">Equipo de trabajo</h2>
+    <p>El proyecto fue desarrollado por el equipo conformado por:</p>
+    <ul>
+        <li>Paula Piedra</li>
+        <li>Hernán Di Gialonardo</li>
+        <li>Lorena Vargas</li>
+        <li>Manuel Visñuk</li>
+        <li>Juan Pablo Bolanio</li>
+    </ul>
+
+    <p>Agradecemos su interés y esperamos que disfruten navegando y aprendiendo con Pulso Digital.</p>
+</section>
 {% endblock %}
