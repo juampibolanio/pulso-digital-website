@@ -13,3 +13,10 @@ def categorias_globales(request):
     return {
         'categorias_menu': categorias
     }
+
+
+def es_redactor(request):
+    if request.user.is_authenticated:
+        es_redactor = request.user.groups.filter(name='redactor').exists()
+        return {'es_redactor': es_redactor}
+    return {'es_redactor': False}

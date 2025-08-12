@@ -4,6 +4,7 @@ from .forms import RegisterForm, PerfilForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .models import Usuario
+from django.contrib.auth.models import Group
 # Create your views here.
 
 # Registro
@@ -12,7 +13,12 @@ def register_view(request):
         form = RegisterForm(request.POST)
         
         if form.is_valid():
-            form.save()
+            usuario = form.save()  # guardamos el usuario
+            
+            # Asignar grupo 'registrado'
+            grupo_registrado = Group.objects.get(name='registrado')
+            usuario.groups.add(grupo_registrado)
+            
             messages.success(request, 'Usuario registrado exitosamente.')
             return redirect('apps.usuarios:login')
     else:

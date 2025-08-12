@@ -16,8 +16,10 @@ from decouple import config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 #BASE_DIR = Path(__file__).resolve().parent.parent
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+com = "esto imrpime"
+cem = BASE_DIR
+print(com, cem)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -65,6 +67,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'apps.noticias.context_processors.categorias_globales',
+                'apps.noticias.context_processors.es_redactor',
             ],
         },
     },
@@ -111,8 +114,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'staticfiles')
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [BASE_DIR / 'static']
 
 
 #STATICFILES_DIRS = ( os.path.join(os.path.dirname(BASE_DIR), 'static'), )
@@ -120,7 +123,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 # Media Files (Images, video)
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'media')
+MEDIA_ROOT = BASE_DIR / 'media'
 
 
 # Default primary key field type
