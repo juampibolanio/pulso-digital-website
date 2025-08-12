@@ -15,11 +15,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.shortcuts import render
 from django.urls import path
 from django.urls import include
 from apps.noticias.views import inicio
 from django.conf.urls.static import static
 from django.conf import settings
+from django.conf.urls import handler403
 
 app_name = 'apps.main'
 
@@ -30,8 +32,14 @@ urlpatterns = [
     path('noticias/', include('apps.noticias.urls')),
     path('contrasenia/', include('django.contrib.auth.urls')),
     path('comentarios/', include('apps.comentarios.urls')),
+    
 ] 
 # Archivos estáticos y media solo en modo DEBUG
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT, show_indexes=True)
+
+def error_403_view(request, exception=None):
+    return render(request, '403.html', status=403)
+
+handler403 = error_403_view

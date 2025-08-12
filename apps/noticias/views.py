@@ -7,6 +7,7 @@ from .models import Categoria, ImagenNoticia, Noticia
 from .forms import NoticiaForm
 from django.shortcuts import redirect
 from django.utils import timezone
+from django.contrib.auth.decorators import permission_required
 from datetime import timedelta
 
 #Listar todas las categorías
@@ -127,6 +128,7 @@ def detalle_noticia(request, noticia_id):
     return render(request, 'noticias/detalle_noticia.html', context )
 
 # Crear noticia
+@permission_required('noticias.add_noticia', raise_exception=True)
 def crear_noticia(request):
     if request.method == 'POST':
         form = NoticiaForm(request.POST)
@@ -149,6 +151,7 @@ def crear_noticia(request):
     return render(request, 'noticias/crear_noticia.html', context)
 
 # Editar una noticia por su ID
+@permission_required('noticias.change_noticia', raise_exception=True)
 def editar_noticia(request, noticia_id):
     noticia = Noticia.objects.get(noticia_id=noticia_id)
 
@@ -185,6 +188,7 @@ def editar_noticia(request, noticia_id):
     return render(request, 'noticias/editar_noticia.html', context)
 
 # Eliminar una noticia por su ID
+@permission_required('noticias.delete_noticia', raise_exception=True)
 def eliminar_noticia(request, noticia_id):
     noticia = Noticia.objects.get(noticia_id=noticia_id)
 
