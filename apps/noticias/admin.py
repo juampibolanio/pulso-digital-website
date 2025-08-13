@@ -1,5 +1,4 @@
 from django.contrib import admin
-
 from apps.noticias.models import Categoria, ImagenNoticia, Noticia
 
 # Register your models here.

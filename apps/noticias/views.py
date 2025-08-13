@@ -1,15 +1,15 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.core.paginator import Paginator
 from apps.comentarios.forms import ComentarioForm
 from apps.comentarios.models import Comentario
 from django.db.models import Count
 from .models import Categoria, ImagenNoticia, Noticia
 from .forms import NoticiaForm
-from django.shortcuts import redirect
 from django.utils import timezone
 from django.contrib.auth.decorators import permission_required
 from datetime import timedelta
 from django.contrib.auth.decorators import login_required, user_passes_test
+
 
 #Listar todas las categorías
 def categorias():
