@@ -1,4 +1,5 @@
 from django.contrib import admin
+from apps.noticias.models import ContactMessage
 
 from apps.noticias.models import Categoria, ImagenNoticia, Noticia
 
@@ -15,3 +16,11 @@ class NoticiaAdmin(admin.ModelAdmin):
 
 admin.site.register(Noticia, NoticiaAdmin)
 admin.site.register(Categoria)
+
+#VER MENSJES DE CONTACTO
+
+@admin.register(ContactMessage)
+class ContactMessageAdmin(admin.ModelAdmin):
+    list_display = ('usuario', 'asunto', 'contenido', 'fecha')
+    list_filter = ('fecha',)
+    search_fields = ('usuario__username', 'asunto', 'contenido')
