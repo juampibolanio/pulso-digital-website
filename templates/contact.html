@@ -1,6 +1,8 @@
+
 {% extends 'base.html' %}
 
 {% block contenido %}
+
 <div class="container-fluid mt-5 pt-3">
         <div class="container">
             <div class="row">
@@ -51,13 +53,23 @@
         </div>
     </div>
 
+    <!--Agregar un contenedor para mostrar mensajes de éxito--> 
+
+    <div id="alert-container"></div>
+    
     <div class="form-group">
         <input type="text" name="asunto" class="form-control p-4" placeholder="Asunto" required>
     </div>
 
+    <!---   
     <div class="form-group">
         <textarea name="mensaje" class="form-control" rows="4" placeholder="Mensaje" required></textarea>
     </div>
+    -->
+    <div class="form-group">
+    <textarea name="contenido" class="form-control" rows="4" placeholder="Mensaje" required></textarea>
+</div>
+
 
     <button class="btn btn-primary font-weight-semi-bold px-4" style="height: 50px; color: white;" type="submit">Enviar mensaje</button>
 </form>
@@ -72,5 +84,39 @@
             </div>
         </div>
 </div>
+<!-- Agregar JS para enviar el formulario por AJAX y mostrar mensaje-->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.querySelector('form');
+    const alertContainer = document.getElementById('alert-container');
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault(); // evitar recarga
+        const formData = new FormData(form);
+
+        fetch("{% url 'apps.noticias:contacto' %}", {
+            method: "POST",
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alertContainer.innerHTML = `
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        ${data.message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `;
+                form.reset();
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+});
+</script>
 
 {% endblock %}
