@@ -3,7 +3,8 @@ from django.core.paginator import Paginator
 from apps.comentarios.forms import ComentarioForm
 from apps.comentarios.models import Comentario
 from django.db.models import Count
-from .models import Categoria, ImagenNoticia, Noticia
+from .models import Categoria, ImagenNoticia, Noticia, ContactMessage
+from django.http import JsonResponse
 from .forms import NoticiaForm
 from django.shortcuts import redirect
 from django.utils import timezone
@@ -240,7 +241,25 @@ def nosotros(request):
     return render(request, 'nosotros.html')
 
 # Vista Contacto
+            #def contacto(request):
+            # return render(request, 'contact.html')
+
+@login_required
 def contacto(request):
+    if request.method == 'POST' and request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        asunto = request.POST.get('asunto')
+        contenido = request.POST.get('contenido')
+
+        # Guardar en la BD
+        ContactMessage.objects.create(
+            usuario=request.user,
+            asunto=asunto,
+            contenido=contenido
+        )
+
+        # Redirigir a la misma página para evitar reenviar al refrescar
+        return JsonResponse({'status': 'success', 'message': 'Mensaje enviado correctamente'})
+
     return render(request, 'contact.html')
 
 # Noticias en tendencia

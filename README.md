@@ -19,6 +19,7 @@
 - Creación, visualización, edición y eliminación de publicaciones.
 - Subida de imágenes destacadas en cada post.
 - Restricciones de acceso según el tipo de usuario.
+- Panel de administración para redactores.
 
 ### 💬 Sistema de Comentarios
 
