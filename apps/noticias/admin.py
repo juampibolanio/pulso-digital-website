@@ -1,7 +1,5 @@
 from django.contrib import admin
-from apps.noticias.models import ContactMessage
-
-from apps.noticias.models import Categoria, ImagenNoticia, Noticia
+from apps.noticias.models import Categoria, ImagenNoticia, Noticia, ContactMessage
 
 # Register your models here.
 
