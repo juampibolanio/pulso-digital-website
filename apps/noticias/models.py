@@ -27,3 +27,16 @@ class ImagenNoticia(models.Model):
     noticia = models.ForeignKey(Noticia, on_delete=models.CASCADE, related_name='imagenes')
     imagen = models.ImageField(upload_to='noticias/noticias_imagenes')
 
+from django.db import models
+from apps.usuarios.models import Usuario  # tu modelo de usuarios
+
+# Modelo para guardar mensajes
+
+class ContactMessage(models.Model):
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)  # quien envía
+    asunto = models.CharField(max_length=200)
+    contenido = models.TextField()
+    fecha = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.usuario.username} - {self.asunto}"
