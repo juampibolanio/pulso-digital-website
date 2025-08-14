@@ -244,7 +244,6 @@ def nosotros(request):
             #def contacto(request):
             # return render(request, 'contact.html')
 
-@login_required
 def contacto(request):
     if request.method == 'POST' and request.headers.get('x-requested-with') == 'XMLHttpRequest':
         asunto = request.POST.get('asunto')
