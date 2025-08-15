@@ -13,6 +13,7 @@
   - **Usuario registrado**: puede comentar noticias.
 - Sistema de login seguro y validación de autenticación.
 - Los usuarios deben estar registrados y logueados para poder comentar.
+- 3 roles: Admin | Registrado | Redactor
 
 ### 📰 CRUD de Noticias
 
